@@ -1,5 +1,21 @@
 import * as React from "react";
-import { Text, View, StyleSheet, WebView, Alert, Button } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  WebView,
+  Alert,
+  Button,
+  Image
+} from "react-native";
+
+styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center"
+  }
+});
 
 export default class App extends React.Component {
   state = {
@@ -9,16 +25,15 @@ export default class App extends React.Component {
     clientSecret:
       "bc490377045ff6e62ffffdd362044f82da6f0e59b9b985362c2f17b154167095",
     accessToken: "",
-    shots: {}
+    user: {}
   };
 
   onPress = () => {
     const { accessToken } = this.state;
     const url = `https://api.dribbble.com/v2/user?access_token=${accessToken}`;
-    console.log(accessToken);
     fetch(url)
       .then(r => r.json())
-      .then(data => console.log("data: ", data));
+      .then(data => this.setState({ user: data }));
   };
 
   onRedirect = webViewState => {
@@ -44,25 +59,31 @@ export default class App extends React.Component {
   };
 
   render() {
-    const { isAuthorized, accessToken, clientId } = this.state;
-    const redirectUri = "https://snack.expo.io/@weech22/spunky-watermelon";
+    const { isAuthorized, accessToken, clientId, user } = this.state;
+    const redirectUri = "http://localhost:8081";
     const { onRedirect, onPress } = this;
     const uri = `https://dribbble.com/oauth/authorize?client_id=${clientId}`;
-    console.log("shots: ", this.state.shots);
+    console.log("user: ", this.state.user);
     console.log("AT: ", accessToken);
-    if (accessToken === "") {
+    if (!accessToken) {
       return (
         <WebView
           onNavigationStateChange={onRedirect}
           source={{ uri: uri, redirect_uri: redirectUri }}
         />
       );
-    } else {
-      return (
-        <View>
-          <Button title="Get shots" onPress={onPress} />
-        </View>
-      );
     }
+    return (
+      <View style={styles.flex}>
+        <Button title="Get shots" onPress={onPress} />
+        <Image
+          source={{ uri: user.avatar_url }}
+          style={{
+            width: 200,
+            height: 200
+          }}
+        />
+      </View>
+    );
   }
 }
