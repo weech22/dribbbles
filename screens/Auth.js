@@ -1,42 +1,48 @@
 import * as React from "react";
 import { WebView } from "react-native-webview";
+import { Image } from "react-native";
 import { connect } from "react-redux";
+import styled from "styled-components";
 import * as R from "ramda";
 import { writeToken } from "../redux/actions";
 import { client_id, client_secret } from "../utils/constants";
 
+const Wrap = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: #ea4c89;
+  padding-left: 15;
+  padding-right: 15;
+`;
+const Logo = styled.Image`
+  position: relative;
+  top: -80;
+`;
+
+const Caption = styled.Text`
+  color: white;
+  text-align: center;
+`;
+
+const AuthButton = styled.TouchableOpacity`
+  background: #ffd053;
+  border-radius: 3px;
+
+  width: 100%;
+  padding-top: 16;
+  padding-bottom: 16;
+`;
+
 const AuthScreen = ({ writeToken, accessToken, navigation }) => {
-  onRedirect = webViewState => {
-    const url = webViewState.url;
-    console.log("url: ", url);
-
-    if (url.includes("code")) {
-      const code = url.substring(url.indexOf("code=") + 5, url.length);
-      const params = {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          client_id,
-          client_secret,
-          code
-        })
-      };
-
-      fetch("https://dribbble.com/oauth/token", params)
-        .then(r => r.json())
-        .then(data => {
-          if (data.access_token) {
-            writeToken(data.access_token);
-          }
-        });
-    }
-  };
-
-  const uri = `https://dribbble.com/oauth/authorize?client_id=${client_id}`;
-  return <WebView source={{ uri }} onNavigationStateChange={onRedirect} />;
+  return (
+    <Wrap>
+      <Logo source={require("./logo.png")} />
+      <AuthButton>
+        <Caption>Authorization</Caption>
+      </AuthButton>
+    </Wrap>
+  );
 };
 
 const mapStateToProps = state => R.pick(["accessToken"], state);

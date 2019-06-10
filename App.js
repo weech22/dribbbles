@@ -4,7 +4,8 @@ import {
   HomeScreen,
   ProfileScreen,
   LoadingScreen,
-  ShotsScreen
+  ShotsScreen,
+  CreateShotScreen
 } from "./screens";
 import {
   createStackNavigator,
@@ -16,7 +17,8 @@ import NavigationService from "./utils/navigationService";
 const AppStack = createStackNavigator({
   Home: HomeScreen,
   Profile: ProfileScreen,
-  Shots: ShotsScreen
+  Shots: ShotsScreen,
+  CreateShot: CreateShotScreen
 });
 
 const AuthStack = createStackNavigator({ Auth: AuthScreen });

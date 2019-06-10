@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import { View, ImageBackground } from "react-native";
-import { connect } from "react-redux";
+import React from "react";
 import * as R from "ramda";
 import styled from "styled-components";
 import Shot from "./Shot";
@@ -16,17 +14,8 @@ const Wrap = styled.View`
   padding-top: 35;
 `;
 
-const Title = styled.Text``;
+const ShotsList = ({ shots }) => (
+  <Wrap>{shots && shots.map(shot => <Shot key={shot.id} shot={shot} />)}</Wrap>
+);
 
-const ShotsList = ({ navigation, shots }) => {
-  useEffect(() => {}, []);
-
-  return <Wrap>{shots && shots.map(shot => <Shot shot={shot} />)}</Wrap>;
-};
-
-const mapStateToProps = state => R.pick(["accessToken"], state);
-
-export default connect(
-  mapStateToProps,
-  {}
-)(ShotsList);
+export default ShotsList;

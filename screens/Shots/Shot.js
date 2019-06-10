@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { View, ImageBackground } from "react-native";
 import { connect } from "react-redux";
 import * as R from "ramda";
 import styled from "styled-components";
@@ -15,6 +14,7 @@ const Wrap = styled.View`
   padding-bottom: 10;
   padding-left: 15;
   padding-top: 15;
+  border-radius: 5;
 `;
 
 const Body = styled.View`
@@ -30,6 +30,17 @@ const Thumbnail = styled.Image`
   border-color: #979797;
 `;
 
+const shadow = {
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  elevation: 5
+};
+
 const Title = styled.Text`
   margin-bottom: 10;
 `;
@@ -39,19 +50,7 @@ const Shot = ({ navigation, shot }) => {
   useEffect(() => {}, []);
 
   return (
-    <Wrap
-      style={{
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-
-        elevation: 5
-      }}
-    >
+    <Wrap style={shadow}>
       <Title>{shot.title}</Title>
       <Body>
         <Thumbnail source={{ uri: shot.images.teaser }} />

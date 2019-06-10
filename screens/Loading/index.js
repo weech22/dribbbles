@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Image } from "react-native";
+import { Image } from "react-native";
 import { connect } from "react-redux";
 import * as R from "ramda";
 import styled from "styled-components";
@@ -12,6 +12,8 @@ const Wrap = styled.View`
   background-color: #ea4c89;
 `;
 
+const Logo = styled.Image``;
+
 const LoadingScreen = ({ navigation }) => {
   useEffect(() => {
     readToken();
@@ -19,7 +21,7 @@ const LoadingScreen = ({ navigation }) => {
 
   return (
     <Wrap>
-      <Image source={require("./logo.png")} />
+      <Logo source={require("./logo.png")} />
     </Wrap>
   );
 };

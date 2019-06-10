@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
-import { View, ImageBackground } from "react-native";
+import { Image } from "react-native";
 import { connect } from "react-redux";
 import * as R from "ramda";
 import styled from "styled-components";
 import { getUserShots } from "../../redux/actions";
 import ShotsList from "./ShotsList";
+import ControlPanel from "./ControlPanel";
 
 const Wrap = styled.View`
   flex: 1;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
   background-color: #f2f2f2;
 `;
 
@@ -17,23 +17,49 @@ const Title = styled.Text`
   font-size: 18;
 `;
 
+const Header = styled.View`
+  flex: 1;
+  max-height: 45;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 15;
+  padding-right: 15;
+  margin-top: 15;
+  align-items: center;
+`;
+
+const MenuButton = styled.TouchableOpacity`
+  max-width: 45;
+  max-height: 45;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  border-color: black;
+`;
+
 const ShotsScreen = ({ navigation, getUserShots, userShots }) => {
   useEffect(() => {
-    console.log("toki: ", accessToken);
+    // For quicker Auth. Remove when the screen is done
     const accessToken =
       "c0c11be3b37f76967f2380d65465834aa5cb7bb9549d991ff7ad34a53c41a8e0";
     fetch(`https://api.dribbble.com/v2/user/shots?access_token=${accessToken}`)
       .then(response => response.json())
       .then(data => {
-        console.log("shotss: ", data);
         getUserShots(data);
       });
   }, []);
 
   return (
     <Wrap>
-      <Title>Shots</Title>
+      <Header>
+        <Title>Shots</Title>
+        <MenuButton>
+          <Image source={require("./settings.png")} />
+        </MenuButton>
+      </Header>
       <ShotsList shots={userShots} />
+      <ControlPanel />
     </Wrap>
   );
 };
