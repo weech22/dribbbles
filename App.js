@@ -3,7 +3,8 @@ import {
   AuthScreen,
   HomeScreen,
   ProfileScreen,
-  LoadingScreen
+  LoadingScreen,
+  ShotsScreen
 } from "./screens";
 import {
   createStackNavigator,
@@ -14,7 +15,8 @@ import NavigationService from "./utils/navigationService";
 
 const AppStack = createStackNavigator({
   Home: HomeScreen,
-  Profile: ProfileScreen
+  Profile: ProfileScreen,
+  Shots: ShotsScreen
 });
 
 const AuthStack = createStackNavigator({ Auth: AuthScreen });
@@ -22,12 +24,12 @@ const AuthStack = createStackNavigator({ Auth: AuthScreen });
 const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
-      LoadingScreen,
-      App: AppStack,
-      Auth: AuthStack
+      //LoadingScreen,
+      App: AppStack
+      //Auth: AuthStack
     },
     {
-      initialRouteName: "LoadingScreen"
+      initialRouteName: "App"
     }
   )
 );

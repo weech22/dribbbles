@@ -8,6 +8,7 @@ import { client_id, client_secret } from "../utils/constants";
 const AuthScreen = ({ writeToken, accessToken, navigation }) => {
   onRedirect = webViewState => {
     const url = webViewState.url;
+    console.log("url: ", url);
 
     if (url.includes("code")) {
       const code = url.substring(url.indexOf("code=") + 5, url.length);
@@ -34,9 +35,7 @@ const AuthScreen = ({ writeToken, accessToken, navigation }) => {
     }
   };
 
-  const auth = `https://dribbble.com/oauth/authorize?client_id=${client_id}`;
-  const logOut = "https://dribbble.com/session";
-  const uri = accessToken ? logOut : auth;
+  const uri = `https://dribbble.com/oauth/authorize?client_id=${client_id}`;
   return <WebView source={{ uri }} onNavigationStateChange={onRedirect} />;
 };
 

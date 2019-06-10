@@ -7,7 +7,7 @@ import { signOut } from "../redux/actions";
 
 const Wrap = styled.View`
   flex: 1;
-  background-color: papayawhip;
+  background-color: #f2f2f2;
   justify-content: center;
   align-items: center;
 `;
@@ -16,8 +16,8 @@ const HomeScreen = ({ accessToken, signOut, navigation }) => {
   return (
     <Wrap>
       <Text>HomeScreen</Text>
-
       <Button title="Profile" onPress={() => navigation.navigate("Profile")} />
+      <Button title="Shots" onPress={() => navigation.navigate("Shots")} />
       <Button title="Log out" onPress={() => signOut()} />
     </Wrap>
   );
