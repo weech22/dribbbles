@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
-import { ActivityIndicator } from "react-native";
+import { View, Image } from "react-native";
 import { connect } from "react-redux";
 import * as R from "ramda";
 import styled from "styled-components";
-import { readToken } from "../redux/actions";
+import { readToken } from "../../redux/actions";
 
 const Wrap = styled.View`
   flex: 1;
-  background-color: papayawhip;
   justify-content: center;
   align-items: center;
+  background-color: #ea4c89;
 `;
 
 const LoadingScreen = ({ navigation }) => {
@@ -19,7 +19,7 @@ const LoadingScreen = ({ navigation }) => {
 
   return (
     <Wrap>
-      <ActivityIndicator />
+      <Image source={require("./logo.png")} />
     </Wrap>
   );
 };
