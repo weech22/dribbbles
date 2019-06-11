@@ -1,7 +1,4 @@
 import { handleAction } from "redux-actions";
+import { setToken } from "../actions";
 
-export default handleAction(
-  "SET_TOKEN",
-  (state, action) => action.payload,
-  null
-);
+export default handleAction(setToken, (state, action) => action.payload, null);

@@ -5,7 +5,9 @@ import {
   ProfileScreen,
   LoadingScreen,
   ShotsScreen,
-  CreateShotScreen
+  CreateShotScreen,
+  LogoutScreen,
+  LoginScreen
 } from "./screens";
 import {
   createStackNavigator,
@@ -15,20 +17,24 @@ import {
 import NavigationService from "./utils/navigationService";
 
 const AppStack = createStackNavigator({
-  Home: HomeScreen,
-  Profile: ProfileScreen,
-  Shots: ShotsScreen,
+  //Home: HomeScreen,
+  //Profile: ProfileScreen,
+  //Shots: ShotsScreen,
   CreateShot: CreateShotScreen
 });
 
-const AuthStack = createStackNavigator({ Auth: AuthScreen });
+const AuthStack = createStackNavigator({
+  Auth: AuthScreen,
+  Login: LoginScreen
+});
 
 const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
-      //LoadingScreen,
-      App: AppStack
-      //Auth: AuthStack
+      LoadingScreen,
+      App: AppStack,
+      Auth: AuthStack,
+      Logout: LogoutScreen
     },
     {
       initialRouteName: "App"

@@ -6,6 +6,7 @@ import styled from "styled-components";
 import * as R from "ramda";
 import { writeToken } from "../redux/actions";
 import { client_id, client_secret } from "../utils/constants";
+import { requestToken, getCode } from "../utils/helper";
 
 const Wrap = styled.View`
   flex: 1;
@@ -17,7 +18,7 @@ const Wrap = styled.View`
 `;
 const Logo = styled.Image`
   position: relative;
-  top: -80;
+  top: -100;
 `;
 
 const Caption = styled.Text`
@@ -35,10 +36,24 @@ const AuthButton = styled.TouchableOpacity`
 `;
 
 const AuthScreen = ({ writeToken, accessToken, navigation }) => {
+  const onPress = () => {
+    fetch(`https://dribbble.com/oauth/authorize?client_id=${client_id}`).then(
+      response => {
+        const url = response.url;
+        if (url.includes("code")) {
+          const code = getCode(url);
+          requestToken(writeToken, code, client_id, client_secret);
+        } else {
+          navigation.navigate("Login");
+        }
+      }
+    );
+  };
+
   return (
     <Wrap>
       <Logo source={require("./logo.png")} />
-      <AuthButton>
+      <AuthButton onPress={onPress}>
         <Caption>Authorization</Caption>
       </AuthButton>
     </Wrap>

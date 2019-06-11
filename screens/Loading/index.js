@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { Image } from "react-native";
+import { Image, Button } from "react-native";
 import { connect } from "react-redux";
 import * as R from "ramda";
 import styled from "styled-components";
-import { readToken } from "../../redux/actions";
+import { readToken, writeToken } from "../../redux/actions";
+import { client_id, client_secret } from "../../utils/constants";
 
 const Wrap = styled.View`
   flex: 1;
@@ -14,10 +15,10 @@ const Wrap = styled.View`
 
 const Logo = styled.Image``;
 
-const LoadingScreen = ({ navigation }) => {
+const LoadingScreen = ({ navigation, readToken, accessToken, writeToken }) => {
   useEffect(() => {
     readToken();
-  }, [readToken]);
+  }, []);
 
   return (
     <Wrap>
@@ -30,5 +31,5 @@ const mapStateToProps = state => R.pick(["accessToken"], state);
 
 export default connect(
   mapStateToProps,
-  { readToken }
+  { readToken, writeToken }
 )(LoadingScreen);

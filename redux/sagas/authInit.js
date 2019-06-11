@@ -1,49 +1,47 @@
-import { put, takeEvery, call, all } from "redux-saga/effects";
+import {
+  put,
+  takeEvery,
+  takeLatest,
+  call,
+  all,
+  take
+} from "redux-saga/effects";
 import AsyncStorage from "@react-native-community/async-storage";
-
 import NavigationService from "../../utils/navigationService.js";
+import { readToken, writeToken, setToken, signOut } from "../actions";
 
-export function* readToken() {
-  const token = yield AsyncStorage.getItem("@access_token"); // Read Token in Async Store
-  yield put({ type: "SET_TOKEN", payload: token }); // Update redux state
-  const nextScreen = token !== null ? "App" : "Auth";
+export function* readTokenSaga(action) {
+  const token = yield call(AsyncStorage.getItem, "@access_token");
+  yield put({ type: setToken, payload: token });
+  const nextScreen = token ? "App" : "Auth";
   yield call(NavigationService.navigate, nextScreen);
 }
 
 export function* watchReadToken() {
-  yield takeEvery("READ_TOKEN", readToken);
+  yield takeEvery(readToken, readTokenSaga);
 }
 
-export function* writeToken(action) {
+export function* writeTokenSaga(action) {
   const token = action && action.payload;
-  if (token) {
-    yield AsyncStorage.setItem("@access_token", token); // Updates Async Storage
-    yield put({ type: "SET_TOKEN", payload: token }); // Updates redux state
-    yield call(NavigationService.navigate, "App");
-  }
+
+  yield call(AsyncStorage.setItem, "@access_token", token);
+  yield put({ type: setToken, payload: token });
+  yield call(NavigationService.navigate, "App");
 }
 
 export function* watchWriteToken() {
-  yield takeEvery("WRITE_TOKEN", writeToken);
+  yield takeEvery(writeToken, writeTokenSaga);
 }
 
-export function* signOut() {
-  yield AsyncStorage.clear();
-
+export function* signOutSaga() {
+  yield call(AsyncStorage.clear);
   yield call(NavigationService.navigate, "Auth");
 }
 
 export function* watchSignOut() {
-  yield takeEvery("SIGN_OUT", signOut);
+  yield takeEvery(signOut, signOutSaga);
 }
 
 export default function* authInit() {
-  yield all([
-    writeToken(),
-    watchWriteToken(),
-    readToken(),
-    watchReadToken(),
-    signOut(),
-    watchSignOut()
-  ]);
+  yield all([watchWriteToken(), watchReadToken(), watchSignOut()]);
 }
