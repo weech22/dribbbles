@@ -3,6 +3,7 @@ package com.dribbbles;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import com.reactnativecommunity.webview.RNCWebViewPackage;
@@ -28,6 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new PickerPackage(),
             new ImagePickerPackage(),
             new CookieManagerPackage(),
             new RNCWebViewPackage(),

@@ -24,7 +24,7 @@ const LoginScreen = ({ accessToken, writeToken, navigation }) => {
     }
   };
 
-  const uri = `https://dribbble.com/oauth/authorize?client_id=${client_id}`;
+  const uri = `https://dribbble.com/oauth/authorize?client_id=${client_id}&scope=public%20upload`;
   return <WebView source={{ uri }} onNavigationStateChange={onRedirect} />;
 };
 

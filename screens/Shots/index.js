@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
-import { Image } from "react-native";
+import { Image, StatusBar, View, Text } from "react-native";
 import { connect } from "react-redux";
 import * as R from "ramda";
+import { SafeAreaView } from "react-navigation";
 import styled from "styled-components";
 import { getUserShots } from "../../redux/actions";
 import ShotsList from "./ShotsList";
@@ -38,11 +39,8 @@ const MenuButton = styled.TouchableOpacity`
   border-color: black;
 `;
 
-const ShotsScreen = ({ navigation, getUserShots, userShots }) => {
+const ShotsScreen = ({ navigation, getUserShots, userShots, accessToken }) => {
   useEffect(() => {
-    // For quicker Auth. Remove when the screen is done
-    const accessToken =
-      "c0c11be3b37f76967f2380d65465834aa5cb7bb9549d991ff7ad34a53c41a8e0";
     fetch(`https://api.dribbble.com/v2/user/shots?access_token=${accessToken}`)
       .then(response => response.json())
       .then(data => {
@@ -52,6 +50,7 @@ const ShotsScreen = ({ navigation, getUserShots, userShots }) => {
 
   return (
     <Wrap>
+      <SafeAreaView />
       <Header>
         <Title>Shots</Title>
         <MenuButton>

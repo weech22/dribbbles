@@ -36,18 +36,19 @@ const AuthButton = styled.TouchableOpacity`
 `;
 
 const AuthScreen = ({ writeToken, accessToken, navigation }) => {
+  const scope = "public upload";
   const onPress = () => {
-    fetch(`https://dribbble.com/oauth/authorize?client_id=${client_id}`).then(
-      response => {
-        const url = response.url;
-        if (url.includes("code")) {
-          const code = getCode(url);
-          requestToken(writeToken, code, client_id, client_secret);
-        } else {
-          navigation.navigate("Login");
-        }
+    fetch(
+      `https://dribbble.com/oauth/authorize?client_id=${client_id}&scope=public%20upload`
+    ).then(response => {
+      const url = response.url;
+      if (url.includes("code")) {
+        const code = getCode(url);
+        requestToken(writeToken, code, client_id, client_secret);
+      } else {
+        navigation.navigate("Login");
       }
-    );
+    });
   };
 
   return (

@@ -1,8 +1,9 @@
 import React, { useEffect } from "react";
-import { Text, Button } from "react-native";
+import { Text, Button, View } from "react-native";
 import { connect } from "react-redux";
 import * as R from "ramda";
 import styled from "styled-components";
+import { SafeAreaView } from "react-navigation";
 import { signOut } from "../redux/actions";
 
 const Wrap = styled.View`
@@ -13,9 +14,10 @@ const Wrap = styled.View`
 `;
 
 const HomeScreen = ({ accessToken, signOut, navigation }) => {
+  console.log(accessToken);
   return (
     <Wrap>
-      <Text>HomeScreen</Text>
+      <SafeAreaView />
       <Button title="Profile" onPress={() => navigation.navigate("Profile")} />
       <Button title="Shots" onPress={() => navigation.navigate("Shots")} />
       <Button title="Log out" onPress={() => signOut()} />

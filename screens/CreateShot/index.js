@@ -1,17 +1,20 @@
 import React, { useEffect } from "react";
-import { Text, Image } from "react-native";
+import { Text, Image, Alert } from "react-native";
 import { connect } from "react-redux";
 import * as R from "ramda";
 import styled from "styled-components";
-import ImagePicker from "react-native-image-picker";
+import ImagePicker from "react-native-image-crop-picker";
+
 import Input from "./Input";
 import {
   createShot,
   setShotDescription,
   setShotImage,
   setShotTags,
-  setShotTitle
+  setShotTitle,
+  setNewTag
 } from "../../redux/actions";
+import TagBlock from "./TagBlock";
 
 const Wrap = styled.View`
   flex: 1;
@@ -21,22 +24,6 @@ const Wrap = styled.View`
 `;
 
 const Title = styled.Text``;
-
-const Tag = styled.Text`
-  background-color: #ea4c89;
-  padding-left: 8;
-  padding-top: 4;
-  padding-bottom: 4;
-  padding-right: 8;
-  line-height: 14;
-  color: white;
-  font-size: 12;
-  align-self: flex-start;
-  border-radius: 5px;
-  margin-top: 16;
-  margin-right: 7;
-  overflow: hidden;
-`;
 
 const CreateButton = styled.TouchableOpacity`
   margin-top: 70;
@@ -52,13 +39,6 @@ const CreateButton = styled.TouchableOpacity`
 const Caption = styled.Text`
   color: white;
   font-size: 35;
-`;
-
-const TagBlock = styled.View`
-  flex: 1;
-  flex-direction: row;
-
-  max-height: 38;
 `;
 
 const Header = styled.View`
@@ -80,52 +60,48 @@ const CreateShot = ({
   setShotImage,
   setShotTags,
   setShotTitle,
+  setNewTag,
+  newTag,
   title,
   description,
-  tags
+  tags,
+  image,
+  accessToken
 }) => {
   useEffect(() => {}, []);
 
   const onSubmit = () => {
-    // form data
-    // use data from state
-    createShot();
+    const formdata = new FormData();
+
+    // TODO: Validate form
+
+    formdata.append("image", image);
+    formdata.append("title", "10");
+    formdata.append("description", "232");
+    formdata.append("tags", ["d", "ww"]);
+
+    createShot({ data: formdata, token: accessToken });
   };
 
   const chooseImage = () => {
-    const options = {
-      title: "Select Avatar",
-      customButtons: [{ name: "fb", title: "Choose Photo from Facebook" }],
-      storageOptions: {
-        skipBackup: true,
-        path: "images"
-      }
-    };
-
-    /**
-     * The first arg is the options object for customization (it can also be null or omitted for default options),
-     * The second arg is the callback which sends object: response (more info in the API Reference)
-     */
-    ImagePicker.showImagePicker(options, response => {
-      console.log("Response = ", response);
-
-      if (response.didCancel) {
-        console.log("User cancelled image picker");
-      } else if (response.error) {
-        console.log("ImagePicker Error: ", response.error);
-      } else if (response.customButton) {
-        console.log("User tapped custom button: ", response.customButton);
-      } else {
-        const source = { uri: response.uri };
-
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-        this.setState({
-          avatarSource: source
-        });
-      }
+    ImagePicker.openPicker({
+      width: 800,
+      height: 600,
+      cropping: false
+    }).then(selectedImage => {
+      const image = {
+        uri: selectedImage.sourceURL,
+        name: selectedImage.filename,
+        type: selectedImage.mime
+      };
+      setShotImage(image);
     });
+  };
+
+  const addTag = e => {
+    setShotTags([...tags, e.nativeEvent.text]);
+    setNewTag("");
+    console.log(tags);
   };
 
   return (
@@ -142,12 +118,13 @@ const CreateShot = ({
         multiline={true}
         onChange={setShotDescription}
       />
-      <Input label="Tag" onChange={setShotTags} />
-      <TagBlock>
-        <Tag>Middleware</Tag>
-        <Tag>react-native</Tag>
-        <Tag>js</Tag>
-      </TagBlock>
+      <Input
+        label="Tag"
+        onSubmitEditing={addTag}
+        value={newTag}
+        onChange={setNewTag}
+      />
+      <TagBlock tags={tags} />
       <CreateButton onPress={onSubmit}>
         <Caption>Create</Caption>
       </CreateButton>
@@ -159,10 +136,20 @@ const CreateShot = ({
 const mapStateToProps = state => ({
   title: state.newShot.title,
   description: state.newShot.description,
-  tags: state.newShot.tags
+  tags: state.newShot.tags,
+  image: state.newShot.image,
+  accessToken: state.accessToken,
+  newTag: state.newShot.newTag
 });
 
 export default connect(
   mapStateToProps,
-  { createShot, setShotDescription, setShotImage, setShotTags, setShotTitle }
+  {
+    createShot,
+    setShotDescription,
+    setNewTag,
+    setShotImage,
+    setShotTags,
+    setShotTitle
+  }
 )(CreateShot);

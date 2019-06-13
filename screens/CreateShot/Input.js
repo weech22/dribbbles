@@ -33,16 +33,26 @@ const Label = styled.Text`
   z-index: 10;
 `;
 
-const Input = ({ navigation, label, placeholder, multiline, onChange }) => {
+const Input = ({
+  navigation,
+  label,
+  placeholder,
+  multiline,
+  onChange,
+  onSubmitEditing,
+  value
+}) => {
   useEffect(() => {}, []);
 
   return (
     <Wrap>
       <Label>{label}</Label>
       <Edit
+        value={value}
         placeholder={placeholder}
         multiline={multiline}
         onChangeText={e => onChange(e)}
+        onSubmitEditing={onSubmitEditing}
       />
     </Wrap>
   );
