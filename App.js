@@ -6,7 +6,6 @@ import {
   LoadingScreen,
   ShotsScreen,
   CreateShotScreen,
-  LogoutScreen,
   LoginScreen
 } from "./screens";
 import {
@@ -45,8 +44,7 @@ const AppContainer = createAppContainer(
     {
       LoadingScreen,
       App: AppStack,
-      Auth: AuthStack,
-      Logout: LogoutScreen
+      Auth: AuthStack
     },
     {
       initialRouteName: "LoadingScreen"

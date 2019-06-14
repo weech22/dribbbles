@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Image } from "react-native";
+import { Image, Alert } from "react-native";
 import { connect } from "react-redux";
 import * as R from "ramda";
 import styled from "styled-components";
@@ -12,7 +12,7 @@ import {
   setShotTags,
   setShotTitle,
   setNewTag
-} from "../../redux/ducks/createShot";
+} from "../../redux/ducks/createShotScreen";
 import TagBlock from "./TagBlock";
 
 const Wrap = styled.View`
@@ -54,7 +54,6 @@ const AddButton = styled.TouchableOpacity``;
 const addIcon = require("./add.png");
 
 const CreateShot = ({
-  navigation,
   createShot,
   setShotDescription,
   setShotImage,
@@ -69,16 +68,18 @@ const CreateShot = ({
   accessToken
 }) => {
   const onSubmit = () => {
-    const formdata = new FormData();
+    const newShotData = new FormData();
 
-    // TODO: Validate form
+    if (title && image.uri) {
+      newShotData.append("image", image);
+      newShotData.append("title", title);
+      newShotData.append("description", description);
+      newShotData.append("tags", tags);
 
-    formdata.append("image", image);
-    formdata.append("title", "10");
-    formdata.append("description", "232");
-    formdata.append("tags", ["d", "ww"]);
-
-    createShot({ data: formdata, token: accessToken });
+      createShot({ data: newShotData, token: accessToken });
+    } else {
+      Alert.alert("Title and image are required");
+    }
   };
 
   const chooseImage = () => {
@@ -101,7 +102,6 @@ const CreateShot = ({
     setNewTag("");
   };
 
-  // TODO: Make inputs controlled
   return (
     <Wrap>
       <Header>
@@ -132,15 +132,18 @@ const CreateShot = ({
   );
 };
 
-//TODO: Implement Ramda selectors
-const mapStateToProps = state => ({
-  title: state.newShot.title,
-  description: state.newShot.description,
-  tags: state.newShot.tags,
-  image: state.newShot.image,
-  accessToken: state.accessToken,
-  newTag: state.newShot.newTag
-});
+const mapStateToProps = state => {
+  const newShot = key => R.path(["newShot", key], state);
+
+  return {
+    title: newShot("title"),
+    description: newShot("description"),
+    tags: newShot("tags"),
+    image: newShot("image"),
+    accessToken: state.accessToken,
+    newTag: newShot("newTag")
+  };
+};
 
 export default connect(
   mapStateToProps,

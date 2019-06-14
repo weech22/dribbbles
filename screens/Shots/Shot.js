@@ -42,8 +42,11 @@ const shadow = {
 const Title = styled.Text`
   margin-bottom: 10;
 `;
+
 // TODO: Style component
 const Description = styled.Text``;
+
+const formatDescription = s => (s ? s.substring(3, s.length - 4) : "");
 
 export default ({ shot }) => {
   return (
@@ -51,7 +54,7 @@ export default ({ shot }) => {
       <Title>{shot.title}</Title>
       <Body>
         <Thumbnail source={{ uri: shot.images.teaser }} />
-        <Description>{shot.description}</Description>
+        <Description>{formatDescription(shot.description)}</Description>
       </Body>
     </Wrap>
   );

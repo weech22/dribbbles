@@ -1,6 +1,6 @@
 import { createAction } from "redux-actions";
+import * as types from "./types";
 
-// TODO: Substitute for types
-export const readToken = createAction("READ_TOKEN");
-export const writeToken = createAction("WRITE_TOKEN");
-export const setToken = createAction("SET_TOKEN");
+export const readToken = createAction(types.READ_TOKEN);
+export const writeToken = createAction(types.WRITE_TOKEN);
+export const setToken = createAction(types.SET_TOKEN);

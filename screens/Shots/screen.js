@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import * as R from "ramda";
 import { SafeAreaView } from "react-navigation";
 import styled from "styled-components";
-import { getUserShots } from "../../redux/ducks/shotList";
+import { getUserShots } from "../../redux/ducks/userShots";
 import ShotsList from "./ShotsList";
 import ControlPanel from "./ControlPanel";
 
