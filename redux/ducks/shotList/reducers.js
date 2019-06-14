@@ -1,5 +1,5 @@
 import { handleAction } from "redux-actions";
-import { setUserShots } from "../actions";
+import { setUserShots } from "./actions";
 
 export default handleAction(
   setUserShots,

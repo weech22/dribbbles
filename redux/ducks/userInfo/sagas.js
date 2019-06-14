@@ -1,5 +1,5 @@
 import { put, takeEvery, all, call } from "redux-saga/effects";
-import { getUserInfo, setUserInfo } from "../actions";
+import { getUserInfo, setUserInfo } from "./actions";
 
 export function* getUserInfoSaga(action) {
   const token = action.payload;

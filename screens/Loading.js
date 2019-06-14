@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { readToken } from "../redux/actions";
+import { readToken } from "../redux/ducks/authentication";
 
 const Wrap = styled.View`
   flex: 1;

@@ -1,8 +1,9 @@
 import { put, call, takeEvery, all } from "redux-saga/effects";
-import { setUserShots, getUserShots } from "../actions";
+import { setUserShots, getUserShots } from "./actions";
 
 export function* getUserShotsSaga(action) {
   const token = action.payload;
+
   const url = `https://api.dribbble.com/v2/user/shots?access_token=${token}`;
   const userShots = yield call(() =>
     fetch(url).then(response => response.json())

@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import * as R from "ramda";
 import styled from "styled-components";
 import ImagePicker from "react-native-image-crop-picker";
-
 import Input from "./Input";
 import {
   createShot,
@@ -13,7 +12,7 @@ import {
   setShotTags,
   setShotTitle,
   setNewTag
-} from "../../redux/actions";
+} from "../../redux/ducks/createShot";
 import TagBlock from "./TagBlock";
 
 const Wrap = styled.View`

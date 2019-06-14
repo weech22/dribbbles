@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import * as R from "ramda";
 import styled from "styled-components";
-import { getUserInfo } from "../redux/actions";
+import { getUserInfo } from "../redux/ducks/userInfo";
 
 const Wrap = styled.View`
   flex: 1;

@@ -1,6 +1,6 @@
 import { takeEvery, call, all } from "redux-saga/effects";
-import NavigationService from "../../utils/navigationService.js";
-import { createShot } from "../actions";
+import NavigationService from "../../../utils/navigationService";
+import { createShot } from "./actions";
 
 export function* createShotSaga(action) {
   const body = action.payload.data;

@@ -3,7 +3,7 @@ import { Button } from "react-native";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { SafeAreaView } from "react-navigation";
-import { signOut } from "../redux/actions";
+import { signOut } from "../redux/ducks/signOut";
 
 const Wrap = styled.View`
   flex: 1;
@@ -18,7 +18,7 @@ const HomeScreen = ({ signOut, navigation }) => {
       <SafeAreaView />
       <Button title="Profile" onPress={() => navigation.navigate("Profile")} />
       <Button title="Shots" onPress={() => navigation.navigate("Shots")} />
-      <Button title="Log out" onPress={() => signOut()} />
+      {<Button title="Log out" onPress={() => signOut()} />}
     </Wrap>
   );
 };

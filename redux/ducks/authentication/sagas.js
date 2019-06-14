@@ -1,7 +1,7 @@
 import { put, takeEvery, call, all } from "redux-saga/effects";
 import AsyncStorage from "@react-native-community/async-storage";
-import NavigationService from "../../utils/navigationService.js";
-import { readToken, writeToken, setToken, signOut } from "../actions";
+import NavigationService from "../../../utils/navigationService";
+import { readToken, writeToken, setToken, signOut } from "./actions";
 
 export function* readTokenSaga(action) {
   const token = yield call(AsyncStorage.getItem, "@access_token");
@@ -27,15 +27,6 @@ export function* watchWriteToken() {
   yield takeEvery(writeToken, writeTokenSaga);
 }
 
-export function* signOutSaga() {
-  yield call(AsyncStorage.clear);
-  yield call(NavigationService.navigate, "Auth");
-}
-
-export function* watchSignOut() {
-  yield takeEvery(signOut, signOutSaga);
-}
-
-export default function* authInit() {
-  yield all([watchWriteToken(), watchReadToken(), watchSignOut()]);
+export default function* authentication() {
+  yield all([watchWriteToken(), watchReadToken()]);
 }

@@ -1,9 +1,9 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { writeToken } from "../redux/actions";
-import { client_id, client_secret } from "../utils";
-import { requestToken, getCode } from "../utils";
+import { writeToken } from "../redux/ducks/authentication";
+import { client_id, client_secret } from "../utils/constants";
+import { requestToken, getCode } from "../utils/helper";
 
 const Wrap = styled.View`
   flex: 1;

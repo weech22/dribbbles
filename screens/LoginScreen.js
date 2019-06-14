@@ -2,8 +2,8 @@ import React from "react";
 import { WebView } from "react-native-webview";
 import { connect } from "react-redux";
 import { client_id, client_secret } from "../utils/constants";
-import { writeToken } from "../redux/actions";
-import { requestToken, getCode } from "../utils";
+import { requestToken, getCode } from "../utils/helper";
+import { writeToken } from "../redux/ducks/authentication";
 
 const LoginScreen = ({ writeToken }) => {
   onRedirect = webViewState => {
