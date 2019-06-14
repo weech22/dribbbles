@@ -10,9 +10,7 @@ const Edit = styled.TextInput`
   padding-top: 16;
   padding-bottom: 16;
   padding-right: 22;
-  &:placeholder {
-    color: #555555;
-  }
+
   height: ${props => (props.multiline ? 130 : "auto")};
 `;
 

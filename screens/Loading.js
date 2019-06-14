@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Image } from "react-native";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { readToken } from "../redux/ducks/authentication";
@@ -10,17 +11,16 @@ const Wrap = styled.View`
   background-color: #ea4c89;
 `;
 
-//TODO: Implement React Native animation
-const Logo = styled.Image``;
-
 const LoadingScreen = ({ readToken }) => {
   useEffect(() => {
-    readToken();
+    setTimeout(() => {
+      readToken();
+    }, 1500);
   }, []);
 
   return (
     <Wrap>
-      <Logo source={require("./images/logo.png")} />
+      <Image source={require("./images/logo.png")} />
     </Wrap>
   );
 };

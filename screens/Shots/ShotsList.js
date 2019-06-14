@@ -12,6 +12,7 @@ const Wrap = styled.FlatList`
 export default ({ shots }) => (
   <Wrap
     data={shots}
-    renderItem={({ item }) => <Shot key={item.id} shot={item} />}
+    renderItem={({ item }) => <Shot shot={item} />}
+    keyExtractor={(item, index) => index.toString()}
   />
 );

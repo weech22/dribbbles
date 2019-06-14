@@ -22,7 +22,9 @@ const Wrap = styled.View`
   padding-right: 27;
 `;
 
-const Title = styled.Text``;
+const Title = styled.Text`
+  font-size: 18;
+`;
 
 const CreateButton = styled.TouchableOpacity`
   margin-top: 70;
@@ -98,7 +100,9 @@ const CreateShot = ({
   };
 
   const addTag = e => {
-    setShotTags([...tags, e.nativeEvent.text]);
+    if (tags.length < 12) {
+      setShotTags([...tags, e.nativeEvent.text]);
+    }
     setNewTag("");
   };
 

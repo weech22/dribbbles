@@ -1,9 +1,11 @@
 import * as React from "react";
+import { Animated } from "react-native";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import { writeToken } from "../redux/ducks/authentication";
-import { client_id, client_secret } from "../utils/constants";
-import { requestToken, getCode } from "../utils/helper";
+import { writeToken } from "../../redux/ducks/authentication";
+import { client_id, client_secret } from "../../utils/constants";
+import { requestToken, getCode } from "../../utils/helper";
+import Logo from "./Logo";
 
 const Wrap = styled.View`
   flex: 1;
@@ -12,10 +14,6 @@ const Wrap = styled.View`
   background-color: #ea4c89;
   padding-left: 15;
   padding-right: 15;
-`;
-const Logo = styled.Image`
-  position: relative;
-  top: -100;
 `;
 
 const Caption = styled.Text`
@@ -48,7 +46,7 @@ const AuthScreen = ({ writeToken, navigation }) => {
 
   return (
     <Wrap>
-      <Logo source={require("./images/logo.png")} />
+      <Logo />
       <AuthButton onPress={onPress}>
         <Caption>Authorization</Caption>
       </AuthButton>
