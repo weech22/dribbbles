@@ -14,10 +14,10 @@ const store = createStore(reducers, applyMiddleware(sagaMiddleware));
 
 sagaMiddleware.run(rootSaga);
 
-const RNRedux = () => (
+const Dribbbles = () => (
   <Provider store={store}>
     <App />
   </Provider>
 );
 
-AppRegistry.registerComponent(appName, () => RNRedux);
+AppRegistry.registerComponent(appName, () => Dribbbles);

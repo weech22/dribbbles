@@ -1,15 +1,20 @@
-import { put, takeEvery, call, all } from "redux-saga/effects";
+import { put, call, takeEvery, all } from "redux-saga/effects";
+import { setUserShots, getUserShots } from "../actions";
 
-export function* getUserShots(action) {
-  if (action) {
-    yield put({ type: "SET_USER_SHOTS", payload: action.payload }); // Update redux state
-  }
+export function* getUserShotsSaga(action) {
+  const token = action.payload;
+  const url = `https://api.dribbble.com/v2/user/shots?access_token=${token}`;
+  const userShots = yield call(() =>
+    fetch(url).then(response => response.json())
+  );
+
+  yield put({ type: setUserShots, payload: userShots });
 }
 
 export function* watchGetUserShots() {
-  yield takeEvery("GET_USER_SHOTS", getUserShots);
+  yield takeEvery(getUserShots, getUserShotsSaga);
 }
 
 export default function* userShots() {
-  yield all([getUserShots(), watchGetUserShots()]);
+  yield all([watchGetUserShots()]);
 }

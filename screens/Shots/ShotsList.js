@@ -1,5 +1,4 @@
 import React from "react";
-import * as R from "ramda";
 import styled from "styled-components";
 import Shot from "./Shot";
 
@@ -10,11 +9,9 @@ const Wrap = styled.FlatList`
   padding-right: 25;
 `;
 
-const ShotsList = ({ shots }) => (
+export default ({ shots }) => (
   <Wrap
     data={shots}
     renderItem={({ item }) => <Shot key={item.id} shot={item} />}
   />
 );
-
-export default ShotsList;

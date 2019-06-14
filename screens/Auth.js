@@ -1,12 +1,9 @@
 import * as React from "react";
-import { WebView } from "react-native-webview";
-import { Image } from "react-native";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import * as R from "ramda";
 import { writeToken } from "../redux/actions";
-import { client_id, client_secret } from "../utils/constants";
-import { requestToken, getCode } from "../utils/helper";
+import { client_id, client_secret } from "../utils";
+import { requestToken, getCode } from "../utils";
 
 const Wrap = styled.View`
   flex: 1;
@@ -29,14 +26,12 @@ const Caption = styled.Text`
 const AuthButton = styled.TouchableOpacity`
   background: #ffd053;
   border-radius: 3px;
-
   width: 100%;
   padding-top: 16;
   padding-bottom: 16;
 `;
 
-const AuthScreen = ({ writeToken, accessToken, navigation }) => {
-  const scope = "public upload";
+const AuthScreen = ({ writeToken, navigation }) => {
   const onPress = () => {
     fetch(
       `https://dribbble.com/oauth/authorize?client_id=${client_id}&scope=public%20upload`
@@ -53,7 +48,7 @@ const AuthScreen = ({ writeToken, accessToken, navigation }) => {
 
   return (
     <Wrap>
-      <Logo source={require("./logo.png")} />
+      <Logo source={require("./images/logo.png")} />
       <AuthButton onPress={onPress}>
         <Caption>Authorization</Caption>
       </AuthButton>
@@ -61,9 +56,7 @@ const AuthScreen = ({ writeToken, accessToken, navigation }) => {
   );
 };
 
-const mapStateToProps = state => R.pick(["accessToken"], state);
-
 export default connect(
-  mapStateToProps,
+  null,
   { writeToken }
 )(AuthScreen);

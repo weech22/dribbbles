@@ -1,21 +1,11 @@
-import React, { useEffect } from "react";
-import { Text, Button } from "react-native";
+import React from "react";
 import { WebView } from "react-native-webview";
 import { connect } from "react-redux";
-import * as R from "ramda";
-import styled from "styled-components";
 import { client_id, client_secret } from "../utils/constants";
 import { writeToken } from "../redux/actions";
-import { requestToken, getCode } from "../utils/helper";
+import { requestToken, getCode } from "../utils";
 
-const Wrap = styled.View`
-  flex: 1;
-  background-color: #f2f2f2;
-  justify-content: center;
-  align-items: center;
-`;
-
-const LoginScreen = ({ accessToken, writeToken, navigation }) => {
+const LoginScreen = ({ writeToken }) => {
   onRedirect = webViewState => {
     const url = webViewState.url;
     if (url.includes("code")) {
@@ -28,9 +18,7 @@ const LoginScreen = ({ accessToken, writeToken, navigation }) => {
   return <WebView source={{ uri }} onNavigationStateChange={onRedirect} />;
 };
 
-const mapStateToProps = state => R.pick(["accessToken"], state);
-
 export default connect(
-  mapStateToProps,
+  null,
   { writeToken }
 )(LoginScreen);

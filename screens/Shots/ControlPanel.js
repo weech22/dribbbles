@@ -22,22 +22,23 @@ const MenuButton = styled.TouchableOpacity`
   border-color: black;
 `;
 
+// TODO: Make button into separate component?
 const ControlPanel = ({ navigation }) => (
   <Wrap>
     <MenuButton>
-      <Image source={require("./menu.png")} />
+      <Image source={require("./icons/menu.png")} />
     </MenuButton>
     <MenuButton>
-      <Image source={require("./bin.png")} />
+      <Image source={require("./icons/bin.png")} />
     </MenuButton>
     <MenuButton onPress={() => navigation.navigate("CreateShot")}>
-      <Image source={require("./new.png")} />
+      <Image source={require("./icons/new.png")} />
     </MenuButton>
     <MenuButton>
-      <Image source={require("./calendar.png")} />
+      <Image source={require("./icons/calendar.png")} />
     </MenuButton>
     <MenuButton>
-      <Image source={require("./statistics.png")} />
+      <Image source={require("./icons/statistics.png")} />
     </MenuButton>
   </Wrap>
 );

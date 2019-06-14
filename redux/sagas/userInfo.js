@@ -1,15 +1,20 @@
-import { put, takeEvery, call, all } from "redux-saga/effects";
+import { put, takeEvery, all, call } from "redux-saga/effects";
+import { getUserInfo, setUserInfo } from "../actions";
 
-export function* getUserInfo(action) {
-  if (action) {
-    yield put({ type: "SET_USER_INFO", payload: action.payload }); // Update redux state
-  }
+export function* getUserInfoSaga(action) {
+  const token = action.payload;
+  const url = `https://api.dribbble.com/v2/user?access_token=${token}`;
+  const userInfo = yield call(() =>
+    fetch(url).then(response => response.json())
+  );
+
+  yield put({ type: setUserInfo, payload: userInfo });
 }
 
 export function* watchGetUserInfo() {
-  yield takeEvery("GET_USER_INFO", getUserInfo);
+  yield takeEvery(getUserInfo, getUserInfoSaga);
 }
 
 export default function* userInfo() {
-  yield all([getUserInfo(), watchGetUserInfo()]);
+  yield all([watchGetUserInfo()]);
 }

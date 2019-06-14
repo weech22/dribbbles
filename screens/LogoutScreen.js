@@ -11,6 +11,7 @@ const Wrap = styled.View`
   align-items: center;
 `;
 
+// TODO: Find a way to revoke a session
 const LogoutScreen = ({ accessToken, navigation }) => {
   return <WebView source={{ uri: "https://google.com" }} />;
 };

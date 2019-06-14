@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
-import { Text, Button, View } from "react-native";
+import React from "react";
+import { Button } from "react-native";
 import { connect } from "react-redux";
-import * as R from "ramda";
 import styled from "styled-components";
 import { SafeAreaView } from "react-navigation";
 import { signOut } from "../redux/actions";
@@ -13,8 +12,7 @@ const Wrap = styled.View`
   align-items: center;
 `;
 
-const HomeScreen = ({ accessToken, signOut, navigation }) => {
-  console.log(accessToken);
+const HomeScreen = ({ signOut, navigation }) => {
   return (
     <Wrap>
       <SafeAreaView />
@@ -25,9 +23,7 @@ const HomeScreen = ({ accessToken, signOut, navigation }) => {
   );
 };
 
-const mapStateToProps = state => R.pick(["accessToken"], state);
-
 export default connect(
-  mapStateToProps,
+  null,
   { signOut }
 )(HomeScreen);

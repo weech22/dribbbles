@@ -1,7 +1,4 @@
 import { handleAction } from "redux-actions";
+import { setUserInfo } from "../actions";
 
-export default handleAction(
-  "SET_USER_INFO",
-  (state, action) => action.payload,
-  {}
-);
+export default handleAction(setUserInfo, (state, action) => action.payload, {});

@@ -1,10 +1,6 @@
-import React, { useEffect } from "react";
-import { Text } from "react-native";
-import { connect } from "react-redux";
-import * as R from "ramda";
+import React from "react";
+import { View } from "react-native";
 import styled from "styled-components";
-
-const Wrap = styled.View``;
 
 const Edit = styled.TextInput`
   border-width: 1;
@@ -19,6 +15,7 @@ const Edit = styled.TextInput`
   }
   height: ${props => (props.multiline ? 130 : "auto")};
 `;
+
 const Label = styled.Text`
   align-self: flex-start;
   color: #ea4c89;
@@ -33,19 +30,18 @@ const Label = styled.Text`
   z-index: 10;
 `;
 
-const Input = ({
-  navigation,
+export default ({
   label,
   placeholder,
   multiline,
   onChange,
   onSubmitEditing,
-  value
+  value,
+  autoCorrect,
+  blurOnSubmit
 }) => {
-  useEffect(() => {}, []);
-
   return (
-    <Wrap>
+    <View>
       <Label>{label}</Label>
       <Edit
         value={value}
@@ -53,12 +49,9 @@ const Input = ({
         multiline={multiline}
         onChangeText={e => onChange(e)}
         onSubmitEditing={onSubmitEditing}
+        autoCorrect={autoCorrect}
+        blurOnSubmit={blurOnSubmit}
       />
-    </Wrap>
+    </View>
   );
 };
-
-export default connect(
-  null,
-  {}
-)(Input);

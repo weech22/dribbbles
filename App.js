@@ -18,13 +18,13 @@ import NavigationService from "./utils/navigationService";
 
 const navigationOptions = {
   headerStyle: {
-    backgroundColor: "#212121" // this will handle the cutOff at the top the screen
+    backgroundColor: "#212121"
   },
   headerTitleStyle: {
     fontSize: 14,
     fontWeight: "800",
     textAlign: "center",
-    flex: 1 // to make a header centered to the screen
+    flex: 1
   }
 };
 
@@ -54,14 +54,10 @@ const AppContainer = createAppContainer(
   )
 );
 
-const App = () => {
-  return (
-    <AppContainer
-      ref={navigatorRef => {
-        NavigationService.setTopLevelNavigator(navigatorRef);
-      }}
-    />
-  );
-};
-
-export default App;
+export default () => (
+  <AppContainer
+    ref={navigatorRef => {
+      NavigationService.setTopLevelNavigator(navigatorRef);
+    }}
+  />
+);

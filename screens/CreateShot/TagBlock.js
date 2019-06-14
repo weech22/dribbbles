@@ -1,9 +1,5 @@
-import React, { useEffect } from "react";
-import { Text, Image, Alert } from "react-native";
-import { connect } from "react-redux";
-import * as R from "ramda";
+import React from "react";
 import styled from "styled-components";
-import { createShotSaga } from "../../redux/sagas/createShot";
 
 const Wrap = styled.View`
   flex: 1;
@@ -28,7 +24,7 @@ const Tag = styled.Text`
   overflow: hidden;
 `;
 
-const TagBlock = ({ tags }) => {
+export default ({ tags }) => {
   return (
     <Wrap>
       {tags.map(tag => (
@@ -37,5 +33,3 @@ const TagBlock = ({ tags }) => {
     </Wrap>
   );
 };
-
-export default TagBlock;

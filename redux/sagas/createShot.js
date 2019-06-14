@@ -1,12 +1,10 @@
-import { put, takeEvery, call, all } from "redux-saga/effects";
-import { Alert } from "react-native";
+import { takeEvery, call, all } from "redux-saga/effects";
 import NavigationService from "../../utils/navigationService.js";
 import { createShot } from "../actions";
 
 export function* createShotSaga(action) {
   const body = action.payload.data;
   const token = action.payload.token;
-
   const params = {
     method: "POST",
     headers: {
@@ -17,8 +15,7 @@ export function* createShotSaga(action) {
     body
   };
 
-  fetch(`https://api.dribbble.com/v2/shots`, params);
-
+  yield call(fetch, `https://api.dribbble.com/v2/shots`, params);
   yield call(NavigationService.navigate, "Shots");
 }
 

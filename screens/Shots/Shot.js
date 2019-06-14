@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import * as R from "ramda";
+import React from "react";
 import styled from "styled-components";
 
 const Wrap = styled.View`
@@ -44,11 +42,10 @@ const shadow = {
 const Title = styled.Text`
   margin-bottom: 10;
 `;
+// TODO: Style component
 const Description = styled.Text``;
 
-const Shot = ({ navigation, shot }) => {
-  useEffect(() => {}, []);
-
+export default ({ shot }) => {
   return (
     <Wrap style={shadow}>
       <Title>{shot.title}</Title>
@@ -59,10 +56,3 @@ const Shot = ({ navigation, shot }) => {
     </Wrap>
   );
 };
-
-const mapStateToProps = state => R.pick(["accessToken"], state);
-
-export default connect(
-  mapStateToProps,
-  {}
-)(Shot);

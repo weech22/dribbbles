@@ -1,19 +1,13 @@
-import {
-  put,
-  takeEvery,
-  takeLatest,
-  call,
-  all,
-  take
-} from "redux-saga/effects";
+import { put, takeEvery, call, all } from "redux-saga/effects";
 import AsyncStorage from "@react-native-community/async-storage";
 import NavigationService from "../../utils/navigationService.js";
 import { readToken, writeToken, setToken, signOut } from "../actions";
 
 export function* readTokenSaga(action) {
   const token = yield call(AsyncStorage.getItem, "@access_token");
-  yield put({ type: setToken, payload: token });
   const nextScreen = token ? "App" : "Auth";
+
+  yield put({ type: setToken, payload: token });
   yield call(NavigationService.navigate, nextScreen);
 }
 

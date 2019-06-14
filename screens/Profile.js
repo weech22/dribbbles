@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Text, Button, Image, Alert } from "react-native";
 import { connect } from "react-redux";
 import * as R from "ramda";
 import styled from "styled-components";
@@ -22,18 +21,13 @@ const Name = styled.Text`
   color: palevioletred;
 `;
 
-const ProfileScreen = ({ navigation, accessToken, userInfo, getUserInfo }) => {
+const ProfileScreen = ({ accessToken, userInfo, getUserInfo }) => {
   useEffect(() => {
-    fetch(`https://api.dribbble.com/v2/user?access_token=${accessToken}`)
-      .then(response => response.json())
-      .then(data => {
-        getUserInfo(data);
-      });
+    getUserInfo(accessToken);
   }, []);
 
   return (
     <Wrap>
-      <Text>ProfileScreen</Text>
       <Avatar source={{ uri: userInfo.avatar_url }} />
       <Name>{userInfo.name}</Name>
     </Wrap>
