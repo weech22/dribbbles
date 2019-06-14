@@ -77,7 +77,6 @@ const CreateShot = ({
       newShotData.append("title", title);
       newShotData.append("description", description);
       newShotData.append("tags", tags);
-
       createShot({ data: newShotData, token: accessToken });
     } else {
       Alert.alert("Title and image are required");
@@ -100,8 +99,9 @@ const CreateShot = ({
   };
 
   const addTag = e => {
-    if (tags.length < 12) {
-      setShotTags([...tags, e.nativeEvent.text]);
+    const newTag = e.nativeEvent.text;
+    if (tags.length < 12 && tags.indexOf(newTag) === -1) {
+      setShotTags([...tags, newTag]);
     }
     setNewTag("");
   };
