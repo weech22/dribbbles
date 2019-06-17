@@ -1,14 +1,12 @@
 import React from "react";
 import {
   AuthScreen,
-  HomeScreen,
-  ProfileScreen,
   LoadingScreen,
   ShotsScreen,
   CreateShotScreen,
   LoginScreen
 } from "./screens";
-console.log("dd: ", AuthScreen);
+
 import {
   createStackNavigator,
   createAppContainer,
@@ -22,8 +20,6 @@ const defaultNavigationOptions = {
 
 const AppStack = createStackNavigator(
   {
-    Home: HomeScreen,
-    Profile: ProfileScreen,
     Shots: ShotsScreen,
     CreateShot: CreateShotScreen
   },

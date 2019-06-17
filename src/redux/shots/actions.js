@@ -3,6 +3,7 @@ import { createAction } from "redux-actions";
 // Shot List Page
 export const setUserShots = createAction("SET_USER_SHOTS");
 export const getUserShots = createAction("GET_USER_SHOTS");
+export const deleteShot = createAction("DELETE_SHOT");
 
 // Create Shot Page
 export const createShot = createAction("CREATE_SHOT");

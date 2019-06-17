@@ -83,7 +83,7 @@ const CreateShotScreen = ({
       };
       setShotImage(image);
     });
-  }, [ImagePicker]);
+  }, []);
 
   const addTag = e => {
     const newTag = e.nativeEvent.text;

@@ -25,7 +25,7 @@ const Header = styled.View`
   flex-direction: row;
   justify-content: space-between;
   padding: 0 15px;
-  margin-top: 15;
+  margin: 15px 0;
   align-items: center;
 `;
 
@@ -44,7 +44,7 @@ const ShotsScreen = ({ getUserShots, userShots, accessToken }) => {
   useEffect(() => {
     getUserShots(accessToken);
   }, []);
-
+  console.log(userShots);
   return (
     <Wrap>
       <SafeAreaView />

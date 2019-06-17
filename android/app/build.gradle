@@ -95,6 +95,8 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
+ compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -102,6 +104,8 @@ android {
     }
 
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+        targetSdkVersion 28
         applicationId "com.dribbbles"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -139,8 +143,6 @@ android {
 
 dependencies {
     implementation project(':react-native-image-crop-picker')
-    implementation project(':react-native-image-picker')
-    implementation project(':react-native-cookies')
     implementation project(':react-native-webview')
     implementation project(':@react-native-community_async-storage')
     implementation project(':react-native-gesture-handler')

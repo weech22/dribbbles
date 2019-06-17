@@ -1,5 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import * as R from "ramda";
+import { Image, Alert, View } from "react-native";
+import { connect } from "react-redux";
+import { deleteShot } from "../redux/shots";
 
 const Wrap = styled.View`
   flex: 1;
@@ -16,6 +20,24 @@ const Wrap = styled.View`
 const Body = styled.View`
   flex-direction: row;
 `;
+
+const Header = styled.View`
+  flex: 1;
+  max-height: 16;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 15px 0;
+  align-items: center;
+`;
+
+const DeleteButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  width: 16px;
+  height: 16px;
+`;
+const deleteIcon = require("../assets/delete.png");
 
 // Using 'border' property results in a warning
 const Thumbnail = styled.Image`
@@ -39,17 +61,26 @@ const shadow = {
 };
 
 const Title = styled.Text`
-  margin-bottom: 10;
+  font-size: 14;
+  height: 16px;
 `;
 
 const Description = styled.Text``;
 
 const formatDescription = s => (s ? s.substring(3, s.length - 4) : "");
 
-const Shot = ({ shot }) => {
+const Shot = ({ shot, deleteShot, accessToken }) => {
   return (
     <Wrap style={shadow}>
-      <Title>{shot.title}</Title>
+      <Header>
+        <Title>{shot.title}</Title>
+
+        <DeleteButton
+          onPress={() => deleteShot({ shotId: shot.id, accessToken })}
+        >
+          <Image source={deleteIcon} />
+        </DeleteButton>
+      </Header>
       <Body>
         <Thumbnail source={{ uri: shot.images.teaser }} />
         <Description>{formatDescription(shot.description)}</Description>
@@ -58,4 +89,9 @@ const Shot = ({ shot }) => {
   );
 };
 
-export default Shot;
+const mapStateToProps = state => R.pick(["accessToken"], state);
+
+export default connect(
+  mapStateToProps,
+  { deleteShot }
+)(Shot);
