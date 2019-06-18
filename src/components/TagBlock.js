@@ -21,14 +21,12 @@ const Tag = styled.Text`
   overflow: hidden;
 `;
 
-const TagBlock = ({ tags }) => {
-  return (
-    <Wrap>
-      {tags.map(tag => (
-        <Tag key={tag}>{tag}</Tag>
-      ))}
-    </Wrap>
-  );
-};
+const TagBlock = ({ tags }) => (
+  <Wrap>
+    {tags.map(tag => (
+      <Tag key={tag}>{tag}</Tag>
+    ))}
+  </Wrap>
+);
 
 export default TagBlock;

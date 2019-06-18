@@ -3,6 +3,7 @@ import { Image } from "react-native";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import { readToken } from "../redux/auth";
+import { img } from "../assets";
 
 const Wrap = styled.View`
   flex: 1;
@@ -20,7 +21,7 @@ const LoadingScreen = ({ readToken }) => {
 
   return (
     <Wrap>
-      <Image source={require("../assets/logo.png")} />
+      <Image source={img.logo} />
     </Wrap>
   );
 };

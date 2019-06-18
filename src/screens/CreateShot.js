@@ -1,11 +1,17 @@
 import React, { useCallback } from "react";
-import { Image } from "react-native";
+import { Image, Platform } from "react-native";
 import { connect } from "react-redux";
-import * as R from "ramda";
 import styled from "styled-components";
 import ImagePicker from "react-native-image-crop-picker";
 import { Input, TagBlock } from "../components";
+import { img } from "../assets";
+import { getAccessToken } from "../redux/auth";
 import {
+  getNewTag,
+  getImage,
+  getTags,
+  getDescription,
+  getTitle,
   createShot,
   setShotDescription,
   setShotImage,
@@ -18,7 +24,7 @@ const Wrap = styled.View`
   flex: 1;
   background-color: #f2f2f2;
   padding: 0 27px;
-  padding-top: 80px;
+  padding-top: ${Platform.OS === "ios" ? "60px" : "20px"};
 `;
 
 const Title = styled.Text`
@@ -26,7 +32,7 @@ const Title = styled.Text`
 `;
 
 const CreateButton = styled.TouchableOpacity`
-  margin-top: 70;
+  margin-top: 10;
   background-color: #ea4c89;
   align-self: flex-start;
   border-radius: 3px;
@@ -44,12 +50,18 @@ const Header = styled.View`
   justify-content: space-between;
   align-items: center;
   max-height: 50;
-  margin-bottom: 25;
-  margin-top: 20;
+  margin-bottom: 10;
+  margin-top: 10;
 `;
 
-const AddButton = styled.TouchableOpacity``;
-const addIcon = require("../assets/add.png");
+const AddButton = styled.TouchableOpacity`
+  max-width: 45;
+  max-height: 45;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  border-color: black;
+`;
 
 const CreateShotScreen = ({
   createShot,
@@ -65,10 +77,10 @@ const CreateShotScreen = ({
   image,
   accessToken
 }) => {
-  const onSubmit = () => {
-    const newShot = { image, title, description, tags };
-    createShot({ newShot, accessToken });
-  };
+  const onSubmit = useCallback(() => {
+    /*  const newShot = { image, title, description, tags };
+    createShot({ newShot, accessToken }); */
+  }, [image, title, description, tags]);
 
   const chooseImage = useCallback(() => {
     ImagePicker.openPicker({
@@ -76,29 +88,35 @@ const CreateShotScreen = ({
       height: 600,
       cropping: false
     }).then(selectedImage => {
+      const path = Platform.OS === "ios" ? "sourceURL" : "path";
+      const name = Platform.OS === "ios" ? selectedImage.filename : "newShot";
       const image = {
-        uri: selectedImage.sourceURL,
-        name: selectedImage.filename,
+        uri: selectedImage[path],
+        name,
         type: selectedImage.mime
       };
+
       setShotImage(image);
     });
   }, []);
 
-  const addTag = e => {
-    const newTag = e.nativeEvent.text;
-    if (tags.length < 12 && tags.indexOf(newTag) === -1) {
-      setShotTags([...tags, newTag]);
-    }
-    setNewTag("");
-  };
+  const addTag = useCallback(
+    e => {
+      const newTag = e.nativeEvent.text;
+      if (tags.length < 12 && tags.indexOf(newTag) === -1 && newTag !== "") {
+        setShotTags([...tags, newTag]);
+      }
+      setNewTag("");
+    },
+    [newTag]
+  );
 
   return (
     <Wrap>
       <Header>
         <Title>Create Shot</Title>
         <AddButton onPress={chooseImage}>
-          <Image source={addIcon} />
+          <Image source={img.add} />
         </AddButton>
       </Header>
       <Input label="Title" onChange={setShotTitle} />
@@ -123,18 +141,14 @@ const CreateShotScreen = ({
   );
 };
 
-const mapStateToProps = state => {
-  const newShot = key => R.path(["userShots", "newShot", key], state);
-
-  return {
-    title: newShot("title"),
-    description: newShot("description"),
-    tags: newShot("tags"),
-    image: newShot("image"),
-    accessToken: state.accessToken,
-    newTag: newShot("newTag")
-  };
-};
+const mapStateToProps = state => ({
+  title: getTitle(state),
+  description: getDescription(state),
+  tags: getTags(state),
+  image: getImage(state),
+  accessToken: getAccessToken(state),
+  newTag: getNewTag(state)
+});
 
 export default connect(
   mapStateToProps,

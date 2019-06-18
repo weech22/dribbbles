@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Image } from "react-native";
 import styled from "styled-components";
 import { withNavigation } from "react-navigation";
+import { img } from "../assets";
 
 const Wrap = styled.View`
   flex: 1;
@@ -22,24 +23,31 @@ const MenuButton = styled.TouchableOpacity`
   border-color: black;
 `;
 
-const ControlPanel = ({ navigation }) => (
-  <Wrap>
-    <MenuButton>
-      <Image source={require("../assets/menu.png")} />
-    </MenuButton>
-    <MenuButton>
-      <Image source={require("../assets/bin.png")} />
-    </MenuButton>
-    <MenuButton onPress={() => navigation.navigate("CreateShot")}>
-      <Image source={require("../assets/new.png")} />
-    </MenuButton>
-    <MenuButton>
-      <Image source={require("../assets/calendar.png")} />
-    </MenuButton>
-    <MenuButton>
-      <Image source={require("../assets/statistics.png")} />
-    </MenuButton>
-  </Wrap>
-);
+// TODO: navigation to useCallback?
+const ControlPanel = ({ navigation }) => {
+  const goTo = useCallback(page => {
+    navigation.navigate(page);
+  });
+
+  return (
+    <Wrap>
+      <MenuButton>
+        <Image source={img.menu} />
+      </MenuButton>
+      <MenuButton>
+        <Image source={img.bin} />
+      </MenuButton>
+      <MenuButton onPress={() => goTo("createShot")}>
+        <Image source={img.plus} />
+      </MenuButton>
+      <MenuButton>
+        <Image source={img.calendar} />
+      </MenuButton>
+      <MenuButton>
+        <Image source={img.statistics} />
+      </MenuButton>
+    </Wrap>
+  );
+};
 
 export default withNavigation(ControlPanel);

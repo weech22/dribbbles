@@ -1,15 +1,16 @@
 import React, { useEffect } from "react";
-import { Image } from "react-native";
+import { Image, Platform } from "react-native";
 import { connect } from "react-redux";
-import * as R from "ramda";
 import { SafeAreaView } from "react-navigation";
 import styled from "styled-components";
-import { getUserShots } from "../redux/shots";
+import { getUserShots, getShotList } from "../redux/shots";
+import { getAccessToken, signOut } from "../redux/auth";
 import { ShotsList, ControlPanel } from "../components";
+import { img } from "../assets";
 
 const Wrap = styled.View`
   flex: 1;
-  padding-top: 80px;
+  padding-top: ${Platform.OS === "ios" ? "60px" : "20px"};
   justify-content: space-between;
   background-color: #f2f2f2;
 `;
@@ -38,37 +39,32 @@ const MenuButton = styled.TouchableOpacity`
   border-color: black;
 `;
 
-const settingsIcon = require("../assets/settings.png");
-
-const ShotsScreen = ({ getUserShots, userShots, accessToken }) => {
+const ShotsScreen = ({ getUserShots, signOut, shotList, accessToken }) => {
   useEffect(() => {
     getUserShots(accessToken);
   }, []);
-  console.log(userShots);
+
   return (
     <Wrap>
       <SafeAreaView />
       <Header>
         <Title>Shots</Title>
-        <MenuButton>
-          <Image source={settingsIcon} />
+        <MenuButton onPress={signOut}>
+          <Image source={img.logout} />
         </MenuButton>
       </Header>
-      <ShotsList shots={userShots} />
+      <ShotsList shots={shotList} />
       <ControlPanel />
     </Wrap>
   );
 };
 
-const mapStateToProps = state => {
-  const userShots = R.path(["userShots", "shotList"], state);
-  return {
-    accessToken: state.accessToken,
-    userShots
-  };
-};
+const mapStateToProps = state => ({
+  accessToken: getAccessToken(state),
+  shotList: getShotList(state)
+});
 
 export default connect(
   mapStateToProps,
-  { getUserShots }
+  { getUserShots, signOut }
 )(ShotsScreen);

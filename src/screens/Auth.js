@@ -24,20 +24,14 @@ const AuthButton = styled.TouchableOpacity`
   padding: 16px 0;
 `;
 
-const AuthScreen = ({ signIn }) => {
-  const onPress = () => {
-    signIn();
-  };
-
-  return (
-    <Wrap>
-      <Logo />
-      <AuthButton onPress={onPress}>
-        <Caption>Authorization</Caption>
-      </AuthButton>
-    </Wrap>
-  );
-};
+const AuthScreen = ({ signIn }) => (
+  <Wrap>
+    <Logo />
+    <AuthButton onPress={signIn}>
+      <Caption>Authorization</Caption>
+    </AuthButton>
+  </Wrap>
+);
 
 export default connect(
   null,

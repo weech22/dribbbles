@@ -1,47 +1,15 @@
 import React from "react";
-import {
-  AuthScreen,
-  LoadingScreen,
-  ShotsScreen,
-  CreateShotScreen,
-  LoginScreen
-} from "./screens";
-
-import {
-  createStackNavigator,
-  createAppContainer,
-  createSwitchNavigator
-} from "react-navigation";
+import { LoadingScreen } from "./screens";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import NavigationService from "./utils/navigationService";
-
-const defaultNavigationOptions = {
-  headerTransparent: true
-};
-
-const AppStack = createStackNavigator(
-  {
-    Shots: ShotsScreen,
-    CreateShot: CreateShotScreen
-  },
-  {
-    defaultNavigationOptions
-  }
-);
-
-const AuthStack = createStackNavigator(
-  {
-    Auth: AuthScreen,
-    Login: LoginScreen
-  },
-  { headerMode: "none" }
-);
+import { authStack, appStack } from "./routes";
 
 const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
       LoadingScreen,
-      App: AppStack,
-      Auth: AuthStack
+      app: appStack,
+      auth: authStack
     },
     {
       initialRouteName: "LoadingScreen"

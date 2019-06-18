@@ -4,8 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
-import com.imagepicker.ImagePickerPackage;
-import com.psykar.cookiemanager.CookieManagerPackage;
+
 import com.reactnativecommunity.webview.RNCWebViewPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -30,8 +29,9 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new PickerPackage(),
-            new ImagePickerPackage(),
-            new CookieManagerPackage(),
+            
+            
+            
             new RNCWebViewPackage(),
             new AsyncStoragePackage(),
             new RNGestureHandlerPackage()

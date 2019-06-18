@@ -3,11 +3,11 @@ import AsyncStorage from "@react-native-community/async-storage";
 import NavigationService from "../../utils/navigationService";
 import { readToken, writeToken, setToken, signIn, signOut } from "./actions";
 import { AUTH_URL, CLIENT_ID, CLIENT_SECRET } from "../../utils/constants";
-import { requestToken, getCode } from "../../utils/helper";
+import { getCode } from "../../utils/helper";
 
 function* readTokenSaga() {
   const token = yield call(AsyncStorage.getItem, "@access_token");
-  const nextScreen = token ? "App" : "Auth";
+  const nextScreen = token ? "app" : "auth";
 
   yield put({ type: setToken, payload: token });
   yield call(NavigationService.navigate, nextScreen);
@@ -18,11 +18,34 @@ function* watchReadToken() {
 }
 
 function* writeTokenSaga(action) {
-  const token = action && action.payload;
+  const { clientId, clientSecret, code } = action.payload;
 
-  yield call(AsyncStorage.setItem, "@access_token", token);
-  yield put({ type: setToken, payload: token });
-  yield call(NavigationService.navigate, "App");
+  const params = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      client_id: clientId,
+      client_secret: clientSecret,
+      code
+    })
+  };
+
+  const url = "https://dribbble.com/oauth/token";
+
+  const accessToken = yield call(() =>
+    fetch(url, params).then(response =>
+      response.json().then(data => data.access_token)
+    )
+  );
+
+  if (accessToken) {
+    yield call(AsyncStorage.setItem, "@access_token", accessToken);
+    yield put({ type: setToken, payload: accessToken });
+    yield call(NavigationService.navigate, "app");
+  }
 }
 
 function* watchWriteToken() {
@@ -36,9 +59,13 @@ function* signInSaga() {
 
   if (url.includes("code")) {
     const code = getCode(url);
-    yield call(requestToken, writeToken, code, CLIENT_ID, CLIENT_SECRET);
+    yield call(writeToken, {
+      code,
+      clientId: CLIENT_ID,
+      clientSecret: CLIENT_SECRET
+    });
   } else {
-    yield call(NavigationService.navigate, "Login");
+    yield call(NavigationService.navigate, "login");
   }
 }
 
@@ -48,7 +75,7 @@ function* watchSignIn() {
 
 function* signOutSaga() {
   yield call(AsyncStorage.clear);
-  yield call(NavigationService.navigate, "Auth");
+  yield call(NavigationService.navigate, "auth");
 }
 
 function* watchSignOut() {

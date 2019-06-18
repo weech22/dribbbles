@@ -6,7 +6,6 @@ import { setUserShots, getUserShots, createShot, deleteShot } from "./actions";
 // Shot List Page
 function* getUserShotsSaga(action) {
   const token = action.payload;
-
   const url = `https://api.dribbble.com/v2/user/shots?access_token=${token}`;
   const userShots = yield call(() =>
     fetch(url).then(response => response.json())
@@ -61,9 +60,18 @@ function* createShotSaga(action) {
       body
     };
 
-    yield call(fetch, `https://api.dribbble.com/v2/shots`, params);
+    const url = "https://api.dribbble.com/v2/shots";
 
-    yield call(NavigationService.navigate, "Shots");
+    //yield call(fetch, url, params);
+
+    yield call(() =>
+      fetch(url, params).then(response => {
+        console.log(params);
+        console.log(response);
+      })
+    );
+
+    yield call(NavigationService.navigate, "shots");
   } else {
     Alert.alert("Title and image are required");
   }

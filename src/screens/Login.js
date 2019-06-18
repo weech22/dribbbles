@@ -2,7 +2,7 @@ import React from "react";
 import { WebView } from "react-native-webview";
 import { connect } from "react-redux";
 import { AUTH_URL, CLIENT_ID, CLIENT_SECRET } from "../utils/constants";
-import { requestToken, getCode } from "../utils/helper";
+import { getCode } from "../utils/helper";
 import { writeToken } from "../redux/auth";
 
 const LoginScreen = ({ writeToken }) => {
@@ -10,12 +10,13 @@ const LoginScreen = ({ writeToken }) => {
     const url = webViewState.url;
     if (url.includes("code")) {
       const code = getCode(url);
-      requestToken(writeToken, code, CLIENT_ID, CLIENT_SECRET);
+      writeToken({ code, clientId: CLIENT_ID, clientSecret: CLIENT_SECRET });
     }
   };
 
-  const uri = AUTH_URL;
-  return <WebView source={{ uri }} onNavigationStateChange={onRedirect} />;
+  return (
+    <WebView source={{ uri: AUTH_URL }} onNavigationStateChange={onRedirect} />
+  );
 };
 
 export default connect(

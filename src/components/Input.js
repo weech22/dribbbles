@@ -29,21 +29,19 @@ const Input = ({
   value,
   autoCorrect,
   blurOnSubmit
-}) => {
-  return (
-    <View>
-      <Label>{label}</Label>
-      <Edit
-        value={value}
-        placeholder={placeholder}
-        multiline={multiline}
-        onChangeText={e => onChange(e)}
-        onSubmitEditing={onSubmitEditing}
-        autoCorrect={autoCorrect}
-        blurOnSubmit={blurOnSubmit}
-      />
-    </View>
-  );
-};
+}) => (
+  <View>
+    <Label>{label}</Label>
+    <Edit
+      value={value}
+      placeholder={placeholder}
+      multiline={multiline}
+      onChangeText={onChange}
+      onSubmitEditing={onSubmitEditing}
+      autoCorrect={autoCorrect}
+      blurOnSubmit={blurOnSubmit}
+    />
+  </View>
+);
 
 export default Input;

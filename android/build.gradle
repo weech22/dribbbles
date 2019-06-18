@@ -30,12 +30,11 @@ allprojects {
             url "$rootDir/../node_modules/react-native/android"
         }
          mavenLocal()
-
-
-      // ADD THIS
-      maven { url 'https://maven.google.com' }
+ maven { url 'https://maven.google.com' }
 
       // ADD THIS
       maven { url "https://jitpack.io" }
+
+
     }
 }
