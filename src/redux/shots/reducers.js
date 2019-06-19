@@ -10,24 +10,20 @@ import {
 } from "./actions";
 
 // Shot List Page
-const shotList = handleAction(
-  setUserShots,
-  (state, action) => action.payload,
-  []
-);
+const shotList = handleAction(setUserShots, (_, action) => action.payload, []);
 
 // Create Shot Page
 // TODO: Implement Reducers Map
 const description = handleAction(
   setShotDescription,
-  (state, action) => action.payload,
+  (_, action) => action.payload,
   ""
 );
 
-const image = handleAction(setShotImage, (state, action) => action.payload, {});
-const newTag = handleAction(setNewTag, (state, action) => action.payload, "");
-const tags = handleAction(setShotTags, (state, action) => action.payload, []);
-const title = handleAction(setShotTitle, (state, action) => action.payload, "");
+const image = handleAction(setShotImage, (_, action) => action.payload, {});
+const newTag = handleAction(setNewTag, (_, action) => action.payload, "");
+const tags = handleAction(setShotTags, (_, action) => action.payload, []);
+const title = handleAction(setShotTitle, (_, action) => action.payload, "");
 
 const newShot = combineReducers({
   tags,

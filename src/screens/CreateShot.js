@@ -1,5 +1,11 @@
 import React, { useCallback } from "react";
-import { Image, Platform } from "react-native";
+import {
+  Image,
+  Platform,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard
+} from "react-native";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import ImagePicker from "react-native-image-crop-picker";
@@ -27,6 +33,8 @@ const Wrap = styled.View`
   padding-top: ${Platform.OS === "ios" ? "60px" : "20px"};
 `;
 
+const FormWrap = styled.ScrollView``;
+
 const Title = styled.Text`
   font-size: 18;
 `;
@@ -37,6 +45,7 @@ const CreateButton = styled.TouchableOpacity`
   align-self: flex-start;
   border-radius: 3px;
   padding: 10px 17px;
+  margin-bottom: 20;
 `;
 
 const Caption = styled.Text`
@@ -50,8 +59,7 @@ const Header = styled.View`
   justify-content: space-between;
   align-items: center;
   max-height: 50;
-  margin-bottom: 10;
-  margin-top: 10;
+  margin: 10px 0;
 `;
 
 const AddButton = styled.TouchableOpacity`
@@ -60,8 +68,9 @@ const AddButton = styled.TouchableOpacity`
   flex: 1;
   justify-content: center;
   align-items: center;
-  border-color: black;
 `;
+
+const getFileName = s => (s ? s.substr(s.lastIndexOf("/")) : "new-shot");
 
 const CreateShotScreen = ({
   createShot,
@@ -78,8 +87,9 @@ const CreateShotScreen = ({
   accessToken
 }) => {
   const onSubmit = useCallback(() => {
-    /*  const newShot = { image, title, description, tags };
-    createShot({ newShot, accessToken }); */
+    const newShot = { image, title, description, tags };
+    setShotImage({});
+    createShot({ newShot, accessToken });
   }, [image, title, description, tags]);
 
   const chooseImage = useCallback(() => {
@@ -89,7 +99,11 @@ const CreateShotScreen = ({
       cropping: false
     }).then(selectedImage => {
       const path = Platform.OS === "ios" ? "sourceURL" : "path";
-      const name = Platform.OS === "ios" ? selectedImage.filename : "newShot";
+      const name =
+        Platform.OS === "ios"
+          ? selectedImage.filename
+          : getFileName(selectedImage.path);
+
       const image = {
         uri: selectedImage[path],
         name,
@@ -119,24 +133,31 @@ const CreateShotScreen = ({
           <Image source={img.add} />
         </AddButton>
       </Header>
-      <Input label="Title" onChange={setShotTitle} />
-      <Input
-        label="Description"
-        multiline={true}
-        onChange={setShotDescription}
-      />
-      <Input
-        label="Tag"
-        onSubmitEditing={addTag}
-        value={newTag}
-        onChange={setNewTag}
-        autoCorrect={false}
-        blurOnSubmit={false}
-      />
-      <TagBlock tags={tags} />
-      <CreateButton onPress={onSubmit}>
-        <Caption>Create</Caption>
-      </CreateButton>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+        <FormWrap showsVerticalScrollIndicator={false}>
+          <Input label="Title" onChange={setShotTitle} />
+
+          <Input
+            label="Description"
+            multiline={true}
+            onChange={setShotDescription}
+          />
+
+          <Input
+            label="Tag"
+            onSubmitEditing={addTag}
+            value={newTag}
+            onChange={setNewTag}
+            autoCorrect={false}
+            blurOnSubmit={false}
+          />
+
+          <TagBlock tags={tags} />
+          <CreateButton onPress={onSubmit}>
+            <Caption>Create</Caption>
+          </CreateButton>
+        </FormWrap>
+      </KeyboardAvoidingView>
     </Wrap>
   );
 };

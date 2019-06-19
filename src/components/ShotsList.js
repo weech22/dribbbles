@@ -12,7 +12,7 @@ const Shots = ({ shots }) => (
   <Wrap
     data={shots}
     renderItem={({ item }) => <Shot shot={item} />}
-    keyExtractor={(item, index) => index.toString()}
+    keyExtractor={(_, index) => index.toString()}
   />
 );
 

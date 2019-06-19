@@ -1,4 +1,4 @@
-import { put, call, takeEvery, all } from "redux-saga/effects";
+import { put, call, takeEvery, all, fork } from "redux-saga/effects";
 import { Alert } from "react-native";
 import NavigationService from "../../utils/navigationService";
 import { setUserShots, getUserShots, createShot, deleteShot } from "./actions";
@@ -6,6 +6,8 @@ import { setUserShots, getUserShots, createShot, deleteShot } from "./actions";
 // Shot List Page
 function* getUserShotsSaga(action) {
   const token = action.payload;
+
+  console.log(action);
   const url = `https://api.dribbble.com/v2/user/shots?access_token=${token}`;
   const userShots = yield call(() =>
     fetch(url).then(response => response.json())
@@ -28,9 +30,12 @@ function* deleteShotSaga(action) {
     }
   };
 
-  yield call(fetch, `https://api.dribbble.com/v2/shots/${shotId}`, params);
+  const url = `https://api.dribbble.com/v2/shots/${shotId}`;
 
-  yield put({ type: getUserShots, payload: token });
+  yield call(fetch, url, params);
+
+  // TODO
+  // yield call(getUserShots, token);
 }
 
 function* watchDeleteShot() {
@@ -42,14 +47,20 @@ function* createShotSaga(action) {
   const { image, title, tags, description } = action.payload.newShot;
 
   if (title && image.uri) {
-    const newShotData = new FormData();
-    newShotData.append("image", image);
-    newShotData.append("title", title);
-    newShotData.append("description", description);
-    newShotData.append("tags", tags);
+    const body = new FormData();
+    body.append("image", image);
+    body.append("title", title);
+    body.append("description", description);
+    tags.forEach(tag => {
+      body.append("tags", tag);
+    });
+    // Only 1 tag is being accepted
+    //newShotData.append("tags", tags);
 
-    const body = newShotData;
     const token = action.payload.accessToken;
+
+    const url = "https://api.dribbble.com/v2/shots";
+
     const params = {
       method: "POST",
       headers: {
@@ -60,16 +71,7 @@ function* createShotSaga(action) {
       body
     };
 
-    const url = "https://api.dribbble.com/v2/shots";
-
-    //yield call(fetch, url, params);
-
-    yield call(() =>
-      fetch(url, params).then(response => {
-        console.log(params);
-        console.log(response);
-      })
-    );
+    yield call(fetch, url, params);
 
     yield call(NavigationService.navigate, "shots");
   } else {
@@ -77,10 +79,10 @@ function* createShotSaga(action) {
   }
 }
 
-function* watchcreateShot() {
+function* watchCreateShot() {
   yield takeEvery(createShot, createShotSaga);
 }
 
 export default function* userShots() {
-  yield all([watchGetUserShots(), watchcreateShot(), watchDeleteShot()]);
+  yield all([watchGetUserShots(), watchCreateShot(), watchDeleteShot()]);
 }

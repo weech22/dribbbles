@@ -71,7 +71,7 @@ const formatDescription = s => (s ? s.substring(3, s.length - 4) : "");
 const Shot = ({ shot, deleteShot, accessToken }) => {
   const onDeletePress = useCallback((shotId, accessToken) => {
     deleteShot({ shotId, accessToken });
-  });
+  }, []);
 
   return (
     <Wrap style={shadow}>

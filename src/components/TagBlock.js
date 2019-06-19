@@ -5,7 +5,6 @@ const Wrap = styled.View`
   flex: 1;
   flex-direction: row;
   flex-wrap: wrap;
-  max-height: 38;
 `;
 
 const Tag = styled.Text`
@@ -19,6 +18,7 @@ const Tag = styled.Text`
   margin-top: 16;
   margin-right: 7;
   overflow: hidden;
+  height: 22;
 `;
 
 const TagBlock = ({ tags }) => (
