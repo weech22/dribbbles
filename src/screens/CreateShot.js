@@ -71,6 +71,7 @@ const AddButton = styled.TouchableOpacity`
 `;
 
 const getFileName = s => (s ? s.substr(s.lastIndexOf("/")) : "new-shot");
+const keyboardMode = Platform.OS === "ios" ? "padding" : null;
 
 const CreateShotScreen = ({
   createShot,
@@ -133,7 +134,7 @@ const CreateShotScreen = ({
           <Image source={img.add} />
         </AddButton>
       </Header>
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+      <KeyboardAvoidingView behavior={keyboardMode} style={{ flex: 1 }}>
         <FormWrap showsVerticalScrollIndicator={false}>
           <Input label="Title" onChange={setShotTitle} />
 
