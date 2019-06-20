@@ -3,7 +3,6 @@ import { Image, Platform, KeyboardAvoidingView } from "react-native";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import ImagePicker from "react-native-image-crop-picker";
-import { Input, TagBlock } from "../components";
 import { img } from "../assets";
 import { getAccessToken } from "../redux/auth";
 import {
@@ -19,6 +18,7 @@ import {
   setShotTitle,
   setNewTag
 } from "../redux/shots";
+import { Form } from "../components";
 
 const Wrap = styled.View`
   flex: 1;
@@ -31,20 +31,6 @@ const FormWrap = styled.ScrollView``;
 
 const Title = styled.Text`
   font-size: 18;
-`;
-
-const CreateButton = styled.TouchableOpacity`
-  margin-top: 10;
-  background-color: #ea4c89;
-  align-self: flex-start;
-  border-radius: 3px;
-  padding: 10px 17px;
-  margin-bottom: 20;
-`;
-
-const Caption = styled.Text`
-  color: white;
-  font-size: 35;
 `;
 
 const Header = styled.View`
@@ -115,17 +101,6 @@ const CreateShotScreen = ({
     });
   }, []);
 
-  const addTag = useCallback(
-    e => {
-      const newTag = e.nativeEvent.text;
-      if (tags.length < 12 && tags.indexOf(newTag) === -1 && newTag !== "") {
-        setShotTags([...tags, newTag]);
-      }
-      setNewTag("");
-    },
-    [newTag]
-  );
-
   return (
     <Wrap>
       <Header>
@@ -135,28 +110,8 @@ const CreateShotScreen = ({
         </AddButton>
       </Header>
       <KeyboardAvoidingView behavior={keyboardMode} style={{ flex: 1 }}>
-        <FormWrap showsVerticalScrollIndicator={false}>
-          <Input label="Title" onChange={setShotTitle} />
-
-          <Input
-            label="Description"
-            multiline={true}
-            onChange={setShotDescription}
-          />
-
-          <Input
-            label="Tag"
-            onSubmitEditing={addTag}
-            value={newTag}
-            onChange={setNewTag}
-            autoCorrect={false}
-            blurOnSubmit={false}
-          />
-
-          <TagBlock tags={tags} />
-          <CreateButton onPress={onSubmit}>
-            <Caption>Create</Caption>
-          </CreateButton>
+        <FormWrap>
+          <Form />
         </FormWrap>
       </KeyboardAvoidingView>
     </Wrap>
