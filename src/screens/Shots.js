@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Image, Platform } from "react-native";
+import { Image, Platform, Text } from "react-native";
 import { connect } from "react-redux";
 import { SafeAreaView } from "react-navigation";
 import styled from "styled-components";
@@ -17,6 +17,14 @@ const Wrap = styled.View`
 
 const Title = styled.Text`
   font-size: 18;
+`;
+
+const Caption = styled.Text``;
+
+const NoShots = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Header = styled.View`
@@ -53,7 +61,14 @@ const ShotsScreen = ({ getUserShots, signOut, shotList, accessToken }) => {
           <Image source={img.logout} />
         </MenuButton>
       </Header>
-      <ShotsList shots={shotList} />
+      {shotList.length ? (
+        <ShotsList shots={shotList} />
+      ) : (
+        <NoShots>
+          <Caption>You don't have any shots</Caption>
+        </NoShots>
+      )}
+
       <ControlPanel />
     </Wrap>
   );
