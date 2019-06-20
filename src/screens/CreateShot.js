@@ -90,7 +90,6 @@ const CreateShotScreen = ({
 
   const onSubmit = useCallback(() => {
     const newShot = { image, title, description, tags };
-
     createShot({ newShot, accessToken });
   }, [image, title, description, tags]);
 

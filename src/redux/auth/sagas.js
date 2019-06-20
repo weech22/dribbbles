@@ -17,9 +17,7 @@ function* watchReadToken() {
   yield takeEvery(readToken, readTokenSaga);
 }
 
-function* writeTokenSaga(action) {
-  const { clientId, clientSecret, code } = action.payload;
-
+function* writeTokenSaga({ payload: { clientId, clientSecret, code } }) {
   const params = {
     method: "POST",
     headers: {

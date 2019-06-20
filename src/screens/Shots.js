@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Image, Platform } from "react-native";
 import { connect } from "react-redux";
-import { SafeAreaView } from "react-navigation";
 import styled from "styled-components";
 import { getUserShots, getShotList } from "../redux/shots";
 import { getAccessToken, signOut } from "../redux/auth";
@@ -51,13 +50,11 @@ const MenuButton = styled.TouchableOpacity`
 
 const ShotsScreen = ({ getUserShots, signOut, shotList, accessToken }) => {
   useEffect(() => {
-    console.log(accessToken);
     getUserShots(accessToken);
   }, []);
 
   return (
     <Wrap>
-      <SafeAreaView />
       <Header>
         <Title>Shots</Title>
         <MenuButton onPress={signOut}>
@@ -71,7 +68,6 @@ const ShotsScreen = ({ getUserShots, signOut, shotList, accessToken }) => {
           <Caption>You don't have any shots</Caption>
         </NoShots>
       )}
-
       <ControlPanel />
     </Wrap>
   );

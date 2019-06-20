@@ -7,15 +7,12 @@ import {
   getUserShots,
   createShot,
   deleteShot,
-  deleteShotFail,
   getNewShot,
   deleteShotSuccess
 } from "./actions";
 
 // Shot List Page
-function* getUserShotsSaga(action) {
-  const accessToken = action.payload;
-
+function* getUserShotsSaga({ payload: accessToken }) {
   const url = `https://api.dribbble.com/v2/user/shots`;
 
   const params = {
@@ -31,10 +28,7 @@ function* getUserShotsSaga(action) {
     );
 
     yield put({ type: setUserShots, payload: userShots });
-  } catch (error) {
-    // yield put ( user list fetch failed)
-    console.log("User shots list fetch failed: ", error);
-  }
+  } catch (error) {}
 }
 
 function* watchGetUserShots() {
@@ -54,8 +48,7 @@ function* deleteShotSaga({ payload: { shotId, accessToken } }) {
     yield call(fetch, url, params);
     yield put({ type: deleteShotSuccess, shotId });
   } catch (error) {
-    //yield put({ type: deleteShotFail, error });
-    console.log("Delete shot failed: ", error);
+    Alert.alert("Couldn`t delete the shot, try again.");
   }
 }
 
@@ -100,7 +93,7 @@ function* createShotSaga({
       yield put(getNewShot({ newShotUrl, accessToken }));
       yield call(NavigationService.navigate, "shots");
     } catch (error) {
-      console.log("Create shot failed: ", error);
+      Alert.alert("Couldn`t create shot, try again.");
     }
   } else {
     Alert.alert("Title and image are required");
@@ -113,8 +106,8 @@ function* watchCreateShot() {
 
 function* getNewShotSaga({ payload: { newShotUrl, accessToken } }) {
   const shot = newShotUrl
-    .substring(newShotU.lastIndexOf("/") + 1)
-    .substring(0, newShotU.indexOf("-"));
+    .substring(newShotUrl.lastIndexOf("/") + 1)
+    .substring(0, newShotUrl.indexOf("-"));
 
   const url = `https://dribbble.com/shots/${shot}`;
 
@@ -131,9 +124,9 @@ function* getNewShotSaga({ payload: { newShotUrl, accessToken } }) {
 
   while (response !== 200) {
     response = yield call(() =>
-      fetch(formattedUrl, params).then(response => response.status)
+      fetch(url, params).then(response => response.status)
     );
-    yield delay(10);
+    yield delay(100);
   }
 
   yield put(getUserShots(accessToken));

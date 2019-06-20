@@ -16,7 +16,7 @@ const LoadingScreen = ({ readToken }) => {
   useEffect(() => {
     setTimeout(() => {
       readToken();
-    }, 1500);
+    }, 700);
   }, []);
 
   return (

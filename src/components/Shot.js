@@ -67,6 +67,7 @@ const Title = styled.Text`
 
 const Description = styled.Text``;
 
+// TODO: implement dangerous html render(?)
 const formatDescription = s => (s ? s.substring(3, s.length - 4) : "");
 
 const Shot = ({ shot, deleteShot, accessToken }) => {
@@ -78,7 +79,6 @@ const Shot = ({ shot, deleteShot, accessToken }) => {
     <Wrap style={shadow}>
       <Header>
         <Title>{shot.title}</Title>
-
         <DeleteButton onPress={() => onDeletePress(shot.id, accessToken)}>
           <Image source={img.remove} />
         </DeleteButton>

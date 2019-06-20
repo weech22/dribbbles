@@ -7,7 +7,7 @@ const Edit = styled.TextInput`
   border-radius: 6px;
   padding: 16px 22px;
   height: ${props => (props.multiline ? 130 : "auto")};
-  text-align-vertical: top;
+  text-align-vertical: ${props => (props.multiline ? "top" : "center")};
 `;
 
 const Label = styled.Text`
