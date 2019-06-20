@@ -1,13 +1,18 @@
-import { put, call, takeEvery, all, fork } from "redux-saga/effects";
+import { put, call, takeEvery, all } from "redux-saga/effects";
 import { Alert } from "react-native";
 import NavigationService from "../../utils/navigationService";
-import { setUserShots, getUserShots, createShot, deleteShot } from "./actions";
+import {
+  setUserShots,
+  getUserShots,
+  createShot,
+  deleteShot,
+  deleteShotFail,
+  deleteShotSuccess
+} from "./actions";
 
 // Shot List Page
 function* getUserShotsSaga(action) {
   const token = action.payload;
-
-  console.log(action);
   const url = `https://api.dribbble.com/v2/user/shots?access_token=${token}`;
   const userShots = yield call(() =>
     fetch(url).then(response => response.json())
@@ -32,10 +37,19 @@ function* deleteShotSaga(action) {
 
   const url = `https://api.dribbble.com/v2/shots/${shotId}`;
 
-  yield call(fetch, url, params);
+  //yield call(fetch, url, params);
 
-  // TODO
-  // yield call(getUserShots, token);
+  try {
+    yield call(() =>
+      fetch(url, params).then(response => console.log(response))
+    );
+    console.log("ds");
+    yield put({ type: deleteShotSuccess, shotId });
+  } catch (error) {
+    yield put({ type: deleteShotFail, error });
+  }
+
+  // TODO: Find a way to either invoke getUserShotsSaga(), or alter the Redux store
 }
 
 function* watchDeleteShot() {
@@ -55,7 +69,6 @@ function* createShotSaga(action) {
       body.append("tags", tag);
     });
     // Only 1 tag is being accepted
-    //newShotData.append("tags", tags);
 
     const token = action.payload.accessToken;
 

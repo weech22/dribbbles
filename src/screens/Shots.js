@@ -43,7 +43,7 @@ const ShotsScreen = ({ getUserShots, signOut, shotList, accessToken }) => {
   useEffect(() => {
     getUserShots(accessToken);
   }, []);
-  console.log(shotList);
+
   return (
     <Wrap>
       <SafeAreaView />

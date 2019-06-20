@@ -87,9 +87,14 @@ const CreateShotScreen = ({
   image,
   accessToken
 }) => {
+  /*   setShotImage({});
+  setShotTags([]);
+  setShotDescription("");
+  setShotTitle(""); */
+
   const onSubmit = useCallback(() => {
     const newShot = { image, title, description, tags };
-    setShotImage({});
+
     createShot({ newShot, accessToken });
   }, [image, title, description, tags]);
 

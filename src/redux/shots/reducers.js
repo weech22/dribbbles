@@ -1,4 +1,4 @@
-import { handleAction } from "redux-actions";
+import { handleAction, handleActions } from "redux-actions";
 import { combineReducers } from "redux";
 import {
   setUserShots,
@@ -6,11 +6,20 @@ import {
   setShotImage,
   setNewTag,
   setShotTags,
-  setShotTitle
+  setShotTitle,
+  deleteShotSuccess
 } from "./actions";
 
 // Shot List Page
-const shotList = handleAction(setUserShots, (_, action) => action.payload, []);
+
+const shotList = handleActions(
+  {
+    [setUserShots]: (_, action) => action.payload,
+    [deleteShotSuccess]: (state, action) =>
+      state.filter(shot => shot.id !== action.shotId)
+  },
+  []
+);
 
 // Create Shot Page
 // TODO: Implement Reducers Map
