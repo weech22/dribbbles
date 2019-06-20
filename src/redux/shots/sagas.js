@@ -64,14 +64,15 @@ function* createShotSaga({
   }
 }) {
   if (title && image.uri) {
+    const stringTags = JSON.stringify(tags);
+    const tagsToSend = stringTags.substring(1, stringTags.length - 1);
+
     const body = new FormData();
+
     body.append("image", image);
     body.append("title", title);
     body.append("description", description);
-    tags.forEach(tag => {
-      body.append("tags", tag);
-    });
-    // Only 1 tag is being accepted
+    body.append("tags", tagsToSend);
 
     const url = "https://api.dribbble.com/v2/shots";
 
