@@ -9,6 +9,7 @@ export const deleteShotFail = createAction("DELETE_SHOT_FAIL");
 
 // Create Shot Page
 export const createShot = createAction("CREATE_SHOT");
+export const getNewShot = createAction("GET_NEW_SHOT");
 export const setShotTitle = createAction("SET_TITLE");
 export const setShotDescription = createAction("SET_DESCRIPTION");
 export const setShotTags = createAction("SET_TAGS");

@@ -1,11 +1,5 @@
-import React, { useCallback } from "react";
-import {
-  Image,
-  Platform,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-  Keyboard
-} from "react-native";
+import React, { useCallback, useEffect } from "react";
+import { Image, Platform, KeyboardAvoidingView } from "react-native";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import ImagePicker from "react-native-image-crop-picker";
@@ -87,10 +81,12 @@ const CreateShotScreen = ({
   image,
   accessToken
 }) => {
-  /*   setShotImage({});
-  setShotTags([]);
-  setShotDescription("");
-  setShotTitle(""); */
+  useEffect(() => {
+    setShotImage({});
+    setShotTags([]);
+    setShotDescription("");
+    setShotTitle("");
+  }, []);
 
   const onSubmit = useCallback(() => {
     const newShot = { image, title, description, tags };

@@ -1,55 +1,62 @@
 import { put, call, takeEvery, all } from "redux-saga/effects";
 import { Alert } from "react-native";
 import NavigationService from "../../utils/navigationService";
+import { delay } from "../../utils/helper";
 import {
   setUserShots,
   getUserShots,
   createShot,
   deleteShot,
   deleteShotFail,
+  getNewShot,
   deleteShotSuccess
 } from "./actions";
 
 // Shot List Page
 function* getUserShotsSaga(action) {
-  const token = action.payload;
-  const url = `https://api.dribbble.com/v2/user/shots?access_token=${token}`;
-  const userShots = yield call(() =>
-    fetch(url).then(response => response.json())
-  );
+  const accessToken = action.payload;
 
-  yield put({ type: setUserShots, payload: userShots });
+  const url = `https://api.dribbble.com/v2/user/shots`;
+
+  const params = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  };
+
+  try {
+    const userShots = yield call(() =>
+      fetch(url, params).then(response => response.json())
+    );
+
+    yield put({ type: setUserShots, payload: userShots });
+  } catch (error) {
+    // yield put ( user list fetch failed)
+    console.log("User shots list fetch failed: ", error);
+  }
 }
 
 function* watchGetUserShots() {
   yield takeEvery(getUserShots, getUserShotsSaga);
 }
 
-function* deleteShotSaga(action) {
-  const shotId = action.payload.shotId;
-  const token = action.payload.accessToken;
+function* deleteShotSaga({ payload: { shotId, accessToken } }) {
+  const url = `https://api.dribbble.com/v2/shots/${shotId}`;
   const params = {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${accessToken}`
     }
   };
 
-  const url = `https://api.dribbble.com/v2/shots/${shotId}`;
-
-  //yield call(fetch, url, params);
-
   try {
-    yield call(() =>
-      fetch(url, params).then(response => console.log(response))
-    );
-    console.log("ds");
+    yield call(fetch, url, params);
     yield put({ type: deleteShotSuccess, shotId });
   } catch (error) {
-    yield put({ type: deleteShotFail, error });
+    //yield put({ type: deleteShotFail, error });
+    console.log("Delete shot failed: ", error);
   }
-
-  // TODO: Find a way to either invoke getUserShotsSaga(), or alter the Redux store
 }
 
 function* watchDeleteShot() {
@@ -57,9 +64,12 @@ function* watchDeleteShot() {
 }
 
 // Create Shot Page
-function* createShotSaga(action) {
-  const { image, title, tags, description } = action.payload.newShot;
-
+function* createShotSaga({
+  payload: {
+    newShot: { image, title, tags, description },
+    accessToken
+  }
+}) {
   if (title && image.uri) {
     const body = new FormData();
     body.append("image", image);
@@ -70,8 +80,6 @@ function* createShotSaga(action) {
     });
     // Only 1 tag is being accepted
 
-    const token = action.payload.accessToken;
-
     const url = "https://api.dribbble.com/v2/shots";
 
     const params = {
@@ -79,14 +87,21 @@ function* createShotSaga(action) {
       headers: {
         Accept: "application/json",
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${accessToken}`
       },
       body
     };
 
-    yield call(fetch, url, params);
+    try {
+      const newShotUrl = yield call(() =>
+        fetch(url, params).then(response => response.headers.map.location)
+      );
 
-    yield call(NavigationService.navigate, "shots");
+      yield put(getNewShot({ newShotUrl, accessToken }));
+      yield call(NavigationService.navigate, "shots");
+    } catch (error) {
+      console.log("Create shot failed: ", error);
+    }
   } else {
     Alert.alert("Title and image are required");
   }
@@ -96,6 +111,43 @@ function* watchCreateShot() {
   yield takeEvery(createShot, createShotSaga);
 }
 
+function* getNewShotSaga({ payload: { newShotUrl, accessToken } }) {
+  const shot = newShotUrl
+    .substring(newShotU.lastIndexOf("/") + 1)
+    .substring(0, newShotU.indexOf("-"));
+
+  const url = `https://dribbble.com/shots/${shot}`;
+
+  const params = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  };
+
+  let response = yield call(() =>
+    fetch(url, params).then(response => response.status)
+  );
+
+  while (response !== 200) {
+    response = yield call(() =>
+      fetch(formattedUrl, params).then(response => response.status)
+    );
+    yield delay(10);
+  }
+
+  yield put(getUserShots(accessToken));
+}
+
+function* watchGetNewShot() {
+  yield takeEvery(getNewShot, getNewShotSaga);
+}
+
 export default function* userShots() {
-  yield all([watchGetUserShots(), watchCreateShot(), watchDeleteShot()]);
+  yield all([
+    watchGetUserShots(),
+    watchCreateShot(),
+    watchDeleteShot(),
+    watchGetNewShot()
+  ]);
 }

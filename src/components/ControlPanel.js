@@ -7,6 +7,7 @@ import { img } from "../assets";
 const Wrap = styled.View`
   flex: 1;
   margin-bottom: 30;
+  padding-top: 10;
   flex-direction: row;
   justify-content: space-between;
   background-color: #f2f2f2;
@@ -23,7 +24,6 @@ const MenuButton = styled.TouchableOpacity`
   border-color: black;
 `;
 
-// TODO: navigation to useCallback?
 const ControlPanel = ({ navigation }) => {
   const goTo = useCallback(page => {
     navigation.navigate(page);

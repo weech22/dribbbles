@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Image, Platform, Text } from "react-native";
+import { Image, Platform } from "react-native";
 import { connect } from "react-redux";
 import { SafeAreaView } from "react-navigation";
 import styled from "styled-components";
@@ -19,7 +19,9 @@ const Title = styled.Text`
   font-size: 18;
 `;
 
-const Caption = styled.Text``;
+const Caption = styled.Text`
+  font-size: 16;
+`;
 
 const NoShots = styled.View`
   flex: 1;
@@ -49,6 +51,7 @@ const MenuButton = styled.TouchableOpacity`
 
 const ShotsScreen = ({ getUserShots, signOut, shotList, accessToken }) => {
   useEffect(() => {
+    console.log(accessToken);
     getUserShots(accessToken);
   }, []);
 

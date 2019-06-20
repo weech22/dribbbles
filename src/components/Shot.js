@@ -12,10 +12,11 @@ const Wrap = styled.View`
   background-color: white;
   border-left-color: #ea4c89;
   border-left-width: 5;
-  max-height: 175;
+  height: 175;
   margin-bottom: 20;
   padding: 10px 15px;
   border-radius: 5;
+  flex-shrink: 0;
 `;
 
 const Body = styled.View`
