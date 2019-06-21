@@ -1,16 +1,6 @@
 import { handleAction, handleActions } from "redux-actions";
 import { combineReducers } from "redux";
-import {
-  setUserShots,
-  setShotDescription,
-  setShotImage,
-  setNewTag,
-  setShotTags,
-  setShotTitle,
-  deleteShotSuccess
-} from "./actions";
-
-// Shot List Page
+import { setUserShots, setShotImage, deleteShotSuccess } from "./actions";
 
 const shotList = handleActions(
   {
@@ -21,25 +11,10 @@ const shotList = handleActions(
   []
 );
 
-// Create Shot Page
-// TODO: Implement Reducers Map
-const description = handleAction(
-  setShotDescription,
-  (_, action) => action.payload,
-  ""
-);
-
 const image = handleAction(setShotImage, (_, action) => action.payload, {});
-const newTag = handleAction(setNewTag, (_, action) => action.payload, "");
-const tags = handleAction(setShotTags, (_, action) => action.payload, []);
-const title = handleAction(setShotTitle, (_, action) => action.payload, "");
 
 const newShot = combineReducers({
-  tags,
-  description,
-  title,
-  image,
-  newTag
+  image
 });
 
 export default combineReducers({

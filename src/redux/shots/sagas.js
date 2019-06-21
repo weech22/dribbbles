@@ -63,40 +63,36 @@ function* createShotSaga({
     accessToken
   }
 }) {
-  if (title && image.uri) {
-    const body = new FormData();
-    body.append("image", image);
-    body.append("title", title);
-    body.append("description", description);
-    tags.forEach(tag => {
-      body.append("tags", tag);
-    });
-    // Only 1 tag is being accepted
+  const stringTags = JSON.stringify(tags);
+  const tagsToSend = stringTags.substring(1, stringTags.length - 1);
 
-    const url = "https://api.dribbble.com/v2/shots";
+  const body = new FormData();
+  body.append("image", image);
+  body.append("title", title);
+  body.append("description", description);
+  body.append("tags", tagsToSend);
 
-    const params = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${accessToken}`
-      },
-      body
-    };
+  const url = "https://api.dribbble.com/v2/shots";
 
-    try {
-      const newShotUrl = yield call(() =>
-        fetch(url, params).then(response => response.headers.map.location)
-      );
+  const params = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${accessToken}`
+    },
+    body
+  };
 
-      yield put(getNewShot({ newShotUrl, accessToken }));
-      yield call(NavigationService.navigate, "shots");
-    } catch (error) {
-      Alert.alert("Couldn`t create shot, try again.");
-    }
-  } else {
-    Alert.alert("Title and image are required");
+  try {
+    const newShotUrl = yield call(() =>
+      fetch(url, params).then(response => response.headers.map.location)
+    );
+
+    yield put(getNewShot({ newShotUrl, accessToken }));
+    yield call(NavigationService.navigate, "shots");
+  } catch (error) {
+    Alert.alert("Couldn`t create shot, try again.");
   }
 }
 

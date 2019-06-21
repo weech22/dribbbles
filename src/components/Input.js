@@ -21,70 +21,34 @@ const Label = styled.Text`
   z-index: 10;
 `;
 
-/* name = "lastName"
-component = "input"
-type = "text"
-placeholder = "Last Name"
-
-  < Input label = "Title" onChange = { setShotTitle } />
-
-    <Input
-      label="Description"
-      multiline={true}
-      onChange={setShotDescription}
-    />
-
-    <Input
-      label="Tag"
-      onSubmitEditing={addTag}
-      value={newTag}
-      onChange={setNewTag}
-      autoCorrect={false}
-      
-    />
-
-    <TagBlock tags={tags} />
-    <CreateButton onPress={onSubmit}>
-      <Caption>Create</Caption>
-    </CreateButton> */
-
 const Input = ({
-  input: { onChange, name },
-  placeholder,
+  input,
   multiline,
+  onSubmitEditing,
+  blurOnSubmit,
   autoCorrect,
-  blurOnSubmit
+  onTagChange,
+  value,
+  tagInput
 }) => {
+  const { name, onChange } = input;
+
   return (
     <View>
       <Label>{name}</Label>
       <Edit
+        input={input}
+        value={value}
         name={name}
         type="text"
-        onChangeText={onChange}
-        placeholder={placeholder}
+        onChangeText={tagInput ? onTagChange : onChange}
         multiline={multiline}
-        autoCorrect={autoCorrect}
+        onSubmitEditing={onSubmitEditing}
         blurOnSubmit={blurOnSubmit}
+        autoCorrect={autoCorrect}
       />
     </View>
   );
 };
 
 export default Input;
-
-/* 
-value = { value }
-placeholder = { placeholder }
-multiline = { multiline }
-onChangeText = { onChange }
-onSubmitEditing = { onSubmitEditing }
-autoCorrect = { autoCorrect }
-blurOnSubmit = { blurOnSubmit } */
-
-/* multiline,
-  onChange,
-  onSubmitEditing,
-  value,
-  autoCorrect,
-  blurOnSubmit */
