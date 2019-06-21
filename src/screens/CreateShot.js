@@ -55,11 +55,14 @@ const CreateShotScreen = ({
 }) => {
   const chooseImage = useCallback(() => {
     ImagePicker.openPicker({
-      width: 800,
-      height: 600,
-      cropping: false
+      cropping: true,
+      width: 400,
+      height: 300,
+      compressImageMaxWidth: 400,
+      compressImageMaxHeight: 300
     }).then(selectedImage => {
-      const path = Platform.OS === "ios" ? "sourceURL" : "path";
+      console.log(selectedImage);
+      const path = Platform.OS === "ios" ? "path" : "path";
       const name =
         Platform.OS === "ios"
           ? selectedImage.filename
@@ -92,10 +95,8 @@ const CreateShotScreen = ({
           <ImageViewer
             enableSwipeDown
             renderIndicator={() => null}
-            onCancel={() => {
-              toggleModal();
-            }}
-            imageUrls={[{ url: image.uri || "" }]}
+            onCancel={toggleModal}
+            imageUrls={[{ url: image.uri }]}
           />
         </Modal>
       )}
