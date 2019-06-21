@@ -1,12 +1,18 @@
 import React, { useCallback } from "react";
-import { Image, Platform } from "react-native";
+import { Image, Platform, Modal } from "react-native";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import ImagePicker from "react-native-image-crop-picker";
+import ImageViewer from "react-native-image-zoom-viewer";
 import { img } from "../assets";
-
-import { getImage, createShot, setShotImage } from "../redux/shots";
-import { Form } from "../components";
+import {
+  getImage,
+  createShot,
+  setShotImage,
+  getModalState,
+  toggleModal
+} from "../redux/shots";
+import { Form, Thumbnail } from "../components";
 import { getAccessToken } from "../redux/auth";
 
 const Wrap = styled.View`
@@ -18,6 +24,7 @@ const Wrap = styled.View`
 
 const Title = styled.Text`
   font-size: 18;
+  flex: 1;
 `;
 
 const Header = styled.View`
@@ -39,7 +46,13 @@ const AddButton = styled.TouchableOpacity`
 
 const getFileName = s => (s ? s.substr(s.lastIndexOf("/")) : "new-shot");
 
-const CreateShotScreen = ({ setShotImage, image, accessToken }) => {
+const CreateShotScreen = ({
+  setShotImage,
+  image,
+  accessToken,
+  isModalOpen,
+  toggleModal
+}) => {
   const chooseImage = useCallback(() => {
     ImagePicker.openPicker({
       width: 800,
@@ -66,25 +79,41 @@ const CreateShotScreen = ({ setShotImage, image, accessToken }) => {
     <Wrap>
       <Header>
         <Title>Create Shot</Title>
-        {/* <Thumbnail /> */}
+        {image.uri && <Thumbnail uri={image.uri} />}
+
         <AddButton onPress={chooseImage}>
           <Image source={img.add} />
         </AddButton>
       </Header>
       <Form image={image} accessToken={accessToken} />
+
+      {isModalOpen && (
+        <Modal visible={true} transparent={true}>
+          <ImageViewer
+            enableSwipeDown
+            renderIndicator={() => null}
+            onCancel={() => {
+              toggleModal();
+            }}
+            imageUrls={[{ url: image.uri || "" }]}
+          />
+        </Modal>
+      )}
     </Wrap>
   );
 };
 
 const mapStateToProps = state => ({
   image: getImage(state),
-  accessToken: getAccessToken(state)
+  accessToken: getAccessToken(state),
+  isModalOpen: getModalState(state)
 });
 
 export default connect(
   mapStateToProps,
   {
     createShot,
-    setShotImage
+    setShotImage,
+    toggleModal
   }
 )(CreateShotScreen);

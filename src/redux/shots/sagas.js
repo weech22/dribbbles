@@ -102,8 +102,10 @@ function* watchCreateShot() {
 
 function* getNewShotSaga({ payload: { newShotUrl, accessToken } }) {
   const shot = newShotUrl
-    .substring(newShotUrl.lastIndexOf("/") + 1)
-    .substring(0, newShotUrl.indexOf("-"));
+    ? newShotUrl
+        .substring(newShotUrl.lastIndexOf("/") + 1)
+        .substring(0, newShotUrl.indexOf("-"))
+    : "";
 
   const url = `https://dribbble.com/shots/${shot}`;
 

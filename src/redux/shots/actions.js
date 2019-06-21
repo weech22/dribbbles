@@ -11,3 +11,4 @@ export const deleteShotFail = createAction("DELETE_SHOT_FAIL");
 export const createShot = createAction("CREATE_SHOT");
 export const getNewShot = createAction("GET_NEW_SHOT");
 export const setShotImage = createAction("SET_IMAGE");
+export const toggleModal = createAction("TOGGLE_MODAL");

@@ -1,6 +1,11 @@
 import { handleAction, handleActions } from "redux-actions";
 import { combineReducers } from "redux";
-import { setUserShots, setShotImage, deleteShotSuccess } from "./actions";
+import {
+  setUserShots,
+  setShotImage,
+  deleteShotSuccess,
+  toggleModal
+} from "./actions";
 
 const shotList = handleActions(
   {
@@ -13,8 +18,11 @@ const shotList = handleActions(
 
 const image = handleAction(setShotImage, (_, action) => action.payload, {});
 
+const isModalOpen = handleAction(toggleModal, state => !state, false);
+
 const newShot = combineReducers({
-  image
+  image,
+  isModalOpen
 });
 
 export default combineReducers({
