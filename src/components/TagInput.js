@@ -26,6 +26,13 @@ const TagInput = ({ input }) => {
     [tags]
   );
 
+  const removeTag = useCallback(
+    tag => {
+      setTags(tags.filter(x => x !== tag));
+    },
+    [tags]
+  );
+
   return (
     <Wrap>
       <Input
@@ -37,7 +44,7 @@ const TagInput = ({ input }) => {
         onTagChange={handleChange}
         onSubmitEditing={handleSubmitEditing}
       />
-      <TagBlock tags={tags} />
+      <TagBlock tags={tags} removeTag={removeTag} />
     </Wrap>
   );
 };

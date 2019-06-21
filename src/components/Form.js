@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import { Platform, KeyboardAvoidingView, Alert } from "react-native";
 import styled from "styled-components";
@@ -26,16 +26,17 @@ const Caption = styled.Text`
 const keyboardMode = Platform.OS === "ios" ? "padding" : null;
 
 const Form = ({ handleSubmit, createShot, image, accessToken }) => {
-  // useCallback
-  const postShot = ({ Title: title, Description: description, Tags: tags }) => {
-    if (image.uri && title) {
-      const newShot = { image, title, description, tags };
-
-      createShot({ newShot, accessToken });
-    } else {
-      Alert.alert("Title and image are required");
-    }
-  };
+  const postShot = useCallback(
+    ({ Title: title, Description: description, Tags: tags }) => {
+      if (image.uri && title) {
+        const newShot = { image, title, description, tags };
+        createShot({ newShot, accessToken });
+      } else {
+        Alert.alert("Title and image are required");
+      }
+    },
+    [image]
+  );
 
   return (
     <KeyboardAvoidingView behavior={keyboardMode} style={{ flex: 1 }}>
