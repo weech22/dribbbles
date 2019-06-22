@@ -63,41 +63,36 @@ function* createShotSaga({
     accessToken
   }
 }) {
-  if (title && image.uri) {
-    const stringTags = JSON.stringify(tags);
-    const tagsToSend = stringTags.substring(1, stringTags.length - 1);
+  const stringTags = JSON.stringify(tags);
+  const tagsToSend = stringTags.substring(1, stringTags.length - 1);
 
-    const body = new FormData();
+  const body = new FormData();
+  body.append("image", image);
+  body.append("title", title);
+  body.append("description", description);
+  body.append("tags", tagsToSend);
 
-    body.append("image", image);
-    body.append("title", title);
-    body.append("description", description);
-    body.append("tags", tagsToSend);
+  const url = "https://api.dribbble.com/v2/shots";
 
-    const url = "https://api.dribbble.com/v2/shots";
+  const params = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${accessToken}`
+    },
+    body
+  };
 
-    const params = {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${accessToken}`
-      },
-      body
-    };
+  try {
+    const newShotUrl = yield call(() =>
+      fetch(url, params).then(response => response.headers.map.location)
+    );
 
-    try {
-      const newShotUrl = yield call(() =>
-        fetch(url, params).then(response => response.headers.map.location)
-      );
-
-      yield put(getNewShot({ newShotUrl, accessToken }));
-      yield call(NavigationService.navigate, "shots");
-    } catch (error) {
-      Alert.alert("Couldn`t create shot, try again.");
-    }
-  } else {
-    Alert.alert("Title and image are required");
+    yield put(getNewShot({ newShotUrl, accessToken }));
+    yield call(NavigationService.navigate, "shots");
+  } catch (error) {
+    Alert.alert("Couldn`t create shot, try again.");
   }
 }
 
@@ -107,8 +102,10 @@ function* watchCreateShot() {
 
 function* getNewShotSaga({ payload: { newShotUrl, accessToken } }) {
   const shot = newShotUrl
-    .substring(newShotUrl.lastIndexOf("/") + 1)
-    .substring(0, newShotUrl.indexOf("-"));
+    ? newShotUrl
+        .substring(newShotUrl.lastIndexOf("/") + 1)
+        .substring(0, newShotUrl.indexOf("-"))
+    : "";
 
   const url = `https://dribbble.com/shots/${shot}`;
 

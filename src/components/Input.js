@@ -22,27 +22,33 @@ const Label = styled.Text`
 `;
 
 const Input = ({
-  label,
-  placeholder,
+  input,
   multiline,
-  onChange,
   onSubmitEditing,
-  value,
+  blurOnSubmit,
   autoCorrect,
-  blurOnSubmit
-}) => (
-  <View>
-    <Label>{label}</Label>
-    <Edit
-      value={value}
-      placeholder={placeholder}
-      multiline={multiline}
-      onChangeText={onChange}
-      onSubmitEditing={onSubmitEditing}
-      autoCorrect={autoCorrect}
-      blurOnSubmit={blurOnSubmit}
-    />
-  </View>
-);
+  onTagChange,
+  value,
+  tagInput
+}) => {
+  const { name, onChange } = input;
+
+  return (
+    <View>
+      <Label>{name}</Label>
+      <Edit
+        input={input}
+        value={value}
+        name={name}
+        type="text"
+        onChangeText={tagInput ? onTagChange : onChange}
+        multiline={multiline}
+        onSubmitEditing={onSubmitEditing}
+        blurOnSubmit={blurOnSubmit}
+        autoCorrect={autoCorrect}
+      />
+    </View>
+  );
+};
 
 export default Input;

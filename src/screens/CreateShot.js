@@ -1,24 +1,19 @@
-import React, { useCallback, useEffect } from "react";
-import { Image, Platform, KeyboardAvoidingView } from "react-native";
+import React, { useCallback } from "react";
+import { Image, Platform, Modal } from "react-native";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import ImagePicker from "react-native-image-crop-picker";
-import { Input, TagBlock } from "../components";
+import ImageViewer from "react-native-image-zoom-viewer";
 import { img } from "../assets";
-import { getAccessToken } from "../redux/auth";
 import {
-  getNewTag,
   getImage,
-  getTags,
-  getDescription,
-  getTitle,
   createShot,
-  setShotDescription,
   setShotImage,
-  setShotTags,
-  setShotTitle,
-  setNewTag
+  getModalState,
+  toggleModal
 } from "../redux/shots";
+import { Form, Thumbnail } from "../components";
+import { getAccessToken } from "../redux/auth";
 
 const Wrap = styled.View`
   flex: 1;
@@ -27,24 +22,9 @@ const Wrap = styled.View`
   padding-top: ${Platform.OS === "ios" ? "60px" : "20px"};
 `;
 
-const FormWrap = styled.ScrollView``;
-
 const Title = styled.Text`
   font-size: 18;
-`;
-
-const CreateButton = styled.TouchableOpacity`
-  margin-top: 10;
-  background-color: #ea4c89;
-  align-self: flex-start;
-  border-radius: 3px;
-  padding: 10px 17px;
-  margin-bottom: 20;
-`;
-
-const Caption = styled.Text`
-  color: white;
-  font-size: 35;
+  flex: 1;
 `;
 
 const Header = styled.View`
@@ -65,48 +45,29 @@ const AddButton = styled.TouchableOpacity`
 `;
 
 const getFileName = s => (s ? s.substr(s.lastIndexOf("/")) : "new-shot");
-const keyboardMode = Platform.OS === "ios" ? "padding" : null;
 
 const CreateShotScreen = ({
-  createShot,
-  setShotDescription,
   setShotImage,
-  setShotTags,
-  setShotTitle,
-  setNewTag,
-  newTag,
-  title,
-  description,
-  tags,
   image,
-  accessToken
+  accessToken,
+  isModalOpen,
+  toggleModal
 }) => {
-  useEffect(() => {
-    setShotImage({});
-    setShotTags([]);
-    setShotDescription("");
-    setShotTitle("");
-  }, []);
-
-  const onSubmit = useCallback(() => {
-    const newShot = { image, title, description, tags };
-    createShot({ newShot, accessToken });
-  }, [image, title, description, tags]);
-
   const chooseImage = useCallback(() => {
     ImagePicker.openPicker({
-      width: 800,
-      height: 600,
-      cropping: false
+      cropping: true,
+      width: 400,
+      height: 300,
+      compressImageMaxWidth: 400,
+      compressImageMaxHeight: 300
     }).then(selectedImage => {
-      const path = Platform.OS === "ios" ? "sourceURL" : "path";
       const name =
         Platform.OS === "ios"
           ? selectedImage.filename
           : getFileName(selectedImage.path);
 
       const image = {
-        uri: selectedImage[path],
+        uri: selectedImage.path,
         name,
         type: selectedImage.mime
       };
@@ -115,71 +76,43 @@ const CreateShotScreen = ({
     });
   }, []);
 
-  const addTag = useCallback(
-    e => {
-      const newTag = e.nativeEvent.text;
-      if (tags.length < 12 && tags.indexOf(newTag) === -1 && newTag !== "") {
-        setShotTags([...tags, newTag]);
-      }
-      setNewTag("");
-    },
-    [newTag]
-  );
-
   return (
     <Wrap>
       <Header>
         <Title>Create Shot</Title>
+        {image.uri && <Thumbnail uri={image.uri} />}
+
         <AddButton onPress={chooseImage}>
           <Image source={img.add} />
         </AddButton>
       </Header>
-      <KeyboardAvoidingView behavior={keyboardMode} style={{ flex: 1 }}>
-        <FormWrap showsVerticalScrollIndicator={false}>
-          <Input label="Title" onChange={setShotTitle} />
+      <Form image={image} accessToken={accessToken} />
 
-          <Input
-            label="Description"
-            multiline={true}
-            onChange={setShotDescription}
+      {isModalOpen && (
+        <Modal visible={true} transparent={true}>
+          <ImageViewer
+            enableSwipeDown
+            renderIndicator={() => null}
+            onCancel={toggleModal}
+            imageUrls={[{ url: image.uri }]}
           />
-
-          <Input
-            label="Tag"
-            onSubmitEditing={addTag}
-            value={newTag}
-            onChange={setNewTag}
-            autoCorrect={false}
-            blurOnSubmit={false}
-          />
-
-          <TagBlock tags={tags} />
-          <CreateButton onPress={onSubmit}>
-            <Caption>Create</Caption>
-          </CreateButton>
-        </FormWrap>
-      </KeyboardAvoidingView>
+        </Modal>
+      )}
     </Wrap>
   );
 };
 
 const mapStateToProps = state => ({
-  title: getTitle(state),
-  description: getDescription(state),
-  tags: getTags(state),
   image: getImage(state),
   accessToken: getAccessToken(state),
-  newTag: getNewTag(state)
+  isModalOpen: getModalState(state)
 });
 
 export default connect(
   mapStateToProps,
   {
     createShot,
-    setShotDescription,
-    setNewTag,
     setShotImage,
-    setShotTags,
-    setShotTitle
+    toggleModal
   }
 )(CreateShotScreen);

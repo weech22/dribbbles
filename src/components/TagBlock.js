@@ -21,10 +21,12 @@ const Tag = styled.Text`
   height: 22;
 `;
 
-const TagBlock = ({ tags }) => (
+const TagBlock = ({ tags, removeTag }) => (
   <Wrap>
     {tags.map(tag => (
-      <Tag key={tag}>{tag}</Tag>
+      <Tag key={tag} onPress={() => removeTag(tag)}>
+        {tag}
+      </Tag>
     ))}
   </Wrap>
 );
