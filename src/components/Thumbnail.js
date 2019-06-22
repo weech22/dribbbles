@@ -16,7 +16,7 @@ const Picture = styled.Image`
 const Thumbnail = ({ uri, toggleModal }) => {
   const handlePress = useCallback(() => {
     toggleModal();
-  });
+  }, []);
 
   return <Wrap onPress={handlePress}>{<Picture source={{ uri }} />}</Wrap>;
 };

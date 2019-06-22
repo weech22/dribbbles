@@ -86,10 +86,7 @@ function* createShotSaga({
 
   try {
     const newShotUrl = yield call(() =>
-      fetch(url, params).then(response => {
-        console.log(response);
-        return response.headers.map.location;
-      })
+      fetch(url, params).then(response => response.headers.map.location)
     );
 
     yield put(getNewShot({ newShotUrl, accessToken }));

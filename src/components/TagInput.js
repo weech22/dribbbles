@@ -13,7 +13,7 @@ const TagInput = ({ input }) => {
   const handleSubmitEditing = useCallback(() => {
     if (tag && tags.indexOf(tag) === -1 && tags.length < 12) {
       setTags([...tags, tag]);
-      // TODO: move this into a callback of ^^
+      // TODO: move this into a callback of setTags
       onChange(tags);
     }
     setTag("");

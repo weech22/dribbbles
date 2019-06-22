@@ -61,15 +61,13 @@ const CreateShotScreen = ({
       compressImageMaxWidth: 400,
       compressImageMaxHeight: 300
     }).then(selectedImage => {
-      console.log(selectedImage);
-      const path = Platform.OS === "ios" ? "path" : "path";
       const name =
         Platform.OS === "ios"
           ? selectedImage.filename
           : getFileName(selectedImage.path);
 
       const image = {
-        uri: selectedImage[path],
+        uri: selectedImage.path,
         name,
         type: selectedImage.mime
       };
